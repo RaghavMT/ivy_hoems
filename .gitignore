@@ -1,0 +1,33 @@
+# Secrets — never commit
+.env
+.env.local
+*.key
+
+# Dump output. Keep the merged JSON if it's small enough to be useful evidence;
+# raw pages are large and reproducible by rerunning dump.py.
+data/raw/
+data/_probe/requests.jsonl
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Assignment-provided material, not ours to publish
+docs/statement.md
+docs/API_REFERENCE (1).md
