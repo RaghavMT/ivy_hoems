@@ -1,0 +1,47 @@
+{
+  "/v1/listings": {
+    "path": "/v1/listings",
+    "records_paged": 4400,
+    "distinct_ids": 4400,
+    "ids_missing": 0,
+    "ids_repeated": [],
+    "ids_repeated_count": 0,
+    "echoed_total": 4224,
+    "total_matches_paged": false,
+    "requested_limit": 200,
+    "echoed_limits_seen": [
+      50
+    ],
+    "limit_capped": true
+  },
+  "/v1/rentals": {
+    "path": "/v1/rentals",
+    "records_paged": 1650,
+    "distinct_ids": 1650,
+    "ids_missing": 0,
+    "ids_repeated": [],
+    "ids_repeated_count": 0,
+    "echoed_total": 1584,
+    "total_matches_paged": false,
+    "requested_limit": 200,
+    "echoed_limits_seen": [
+      50
+    ],
+    "limit_capped": true
+  },
+  "/v1/projects": {
+    "path": "/v1/projects",
+    "records_paged": 470,
+    "distinct_ids": 470,
+    "ids_missing": 0,
+    "ids_repeated": [],
+    "ids_repeated_count": 0,
+    "echoed_total": 451,
+    "total_matches_paged": false,
+    "requested_limit": 200,
+    "echoed_limits_seen": [
+      50
+    ],
+    "limit_capped": true
+  }
+}

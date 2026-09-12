@@ -1,0 +1,41 @@
+{
+  "/health": {
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "server_time": "2026-09-12T17:45:55.282530+05:30",
+      "timezone": "Asia/Kolkata",
+      "reference_date": "2026-09-10T00:00:00+05:30"
+    }
+  },
+  "/v1/listings": {
+    "status": 401,
+    "body": {
+      "detail": "missing X-API-Key header"
+    }
+  },
+  "/v1/rentals": {
+    "status": 401,
+    "body": {
+      "detail": "missing X-API-Key header"
+    }
+  },
+  "/v1/projects": {
+    "status": 401,
+    "body": {
+      "detail": "missing X-API-Key header"
+    }
+  },
+  "/v1/analytics/summary": {
+    "status": 404,
+    "body": {
+      "detail": "Not Found"
+    }
+  },
+  "/v1/favourites": {
+    "status": 404,
+    "body": {
+      "detail": "Not Found"
+    }
+  }
+}

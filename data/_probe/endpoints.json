@@ -1,0 +1,192 @@
+{
+  "/health": {
+    "status": 200,
+    "envelope_keys": [
+      "reference_date",
+      "server_time",
+      "status",
+      "timezone"
+    ],
+    "records_key": null,
+    "records_in_first_response": 0,
+    "sample_record_keys": null,
+    "looks_paginated": false,
+    "body_sample": {
+      "status": "ok",
+      "server_time": "2026-09-12T17:46:03.897171+05:30",
+      "timezone": "Asia/Kolkata",
+      "reference_date": "2026-09-10T00:00:00+05:30"
+    }
+  },
+  "/v1/listings": {
+    "status": 200,
+    "envelope_keys": [
+      "count",
+      "has_more",
+      "limit",
+      "offset",
+      "results",
+      "total"
+    ],
+    "records_key": "results",
+    "records_in_first_response": 20,
+    "sample_record_keys": [
+      "apartment_name",
+      "balcony",
+      "bathroom",
+      "bedroom",
+      "carpet_area",
+      "city_id",
+      "covered_parking",
+      "description",
+      "facing_direction",
+      "floor",
+      "furnishing",
+      "is_live",
+      "is_verified",
+      "latitude",
+      "listing_id",
+      "listing_url",
+      "locality",
+      "longitude",
+      "posted_at",
+      "posted_by",
+      "posted_by_contact",
+      "posted_by_name",
+      "price",
+      "project_id",
+      "property_type",
+      "super_built_up_area",
+      "total_floors",
+      "website"
+    ],
+    "looks_paginated": true,
+    "body_sample": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 4224,
+      "has_more": true
+    }
+  },
+  "/v1/rentals": {
+    "status": 200,
+    "envelope_keys": [
+      "count",
+      "has_more",
+      "limit",
+      "offset",
+      "results",
+      "total"
+    ],
+    "records_key": "results",
+    "records_in_first_response": 20,
+    "sample_record_keys": [
+      "apartment_name",
+      "bathroom",
+      "bedroom",
+      "carpet_area",
+      "city_id",
+      "deposit",
+      "description",
+      "facing_direction",
+      "floor",
+      "furnishing",
+      "is_live",
+      "latitude",
+      "listing_id",
+      "listing_url",
+      "locality",
+      "longitude",
+      "maintenance",
+      "posted_at",
+      "posted_by",
+      "posted_by_contact",
+      "posted_by_name",
+      "price",
+      "property_type",
+      "super_builtup_area",
+      "title",
+      "total_floors",
+      "website"
+    ],
+    "looks_paginated": true,
+    "body_sample": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 1584,
+      "has_more": true
+    }
+  },
+  "/v1/projects": {
+    "status": 200,
+    "envelope_keys": [
+      "count",
+      "has_more",
+      "limit",
+      "offset",
+      "results",
+      "total"
+    ],
+    "records_key": "results",
+    "records_in_first_response": 20,
+    "sample_record_keys": [
+      "amenities",
+      "apartment_name",
+      "city_id",
+      "developer_name",
+      "latitude",
+      "launch_date",
+      "locality",
+      "longitude",
+      "max_area_sqft",
+      "min_area_sqft",
+      "possession_date",
+      "price_max",
+      "price_min",
+      "project_id",
+      "project_status",
+      "project_url",
+      "rera_number",
+      "total_floors",
+      "total_listings",
+      "total_towers",
+      "total_units"
+    ],
+    "looks_paginated": true,
+    "body_sample": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 451,
+      "has_more": true
+    }
+  },
+  "/v1/analytics/summary": {
+    "status": 404,
+    "envelope_keys": [
+      "detail"
+    ],
+    "records_key": null,
+    "records_in_first_response": 0,
+    "sample_record_keys": null,
+    "looks_paginated": false,
+    "body_sample": {
+      "detail": "Not Found"
+    }
+  },
+  "/v1/favourites": {
+    "status": 404,
+    "envelope_keys": [
+      "detail"
+    ],
+    "records_key": null,
+    "records_in_first_response": 0,
+    "sample_record_keys": null,
+    "looks_paginated": false,
+    "body_sample": {
+      "detail": "Not Found"
+    }
+  }
+}

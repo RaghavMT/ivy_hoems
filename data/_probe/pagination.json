@@ -1,0 +1,179 @@
+{
+  "/v1/listings": {
+    "path": "/v1/listings",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "zero_based": true,
+    "documented_scheme_works": false,
+    "default_page_size": 20,
+    "baseline_echo": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 4224,
+      "has_more": true
+    },
+    "attempts": [
+      {
+        "limit_param": "limit",
+        "offset_param": "page",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": false,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 4224,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 4224,
+          "has_more": true
+        }
+      },
+      {
+        "limit_param": "limit",
+        "offset_param": "offset",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": true,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 4224,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 3,
+          "count": 3,
+          "total": 4224,
+          "has_more": true
+        }
+      }
+    ]
+  },
+  "/v1/rentals": {
+    "path": "/v1/rentals",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "zero_based": true,
+    "documented_scheme_works": false,
+    "default_page_size": 20,
+    "baseline_echo": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 1584,
+      "has_more": true
+    },
+    "attempts": [
+      {
+        "limit_param": "limit",
+        "offset_param": "page",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": false,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 1584,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 1584,
+          "has_more": true
+        }
+      },
+      {
+        "limit_param": "limit",
+        "offset_param": "offset",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": true,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 1584,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 3,
+          "count": 3,
+          "total": 1584,
+          "has_more": true
+        }
+      }
+    ]
+  },
+  "/v1/projects": {
+    "path": "/v1/projects",
+    "limit_param": "limit",
+    "offset_param": "offset",
+    "zero_based": true,
+    "documented_scheme_works": false,
+    "default_page_size": 20,
+    "baseline_echo": {
+      "limit": 20,
+      "offset": 0,
+      "count": 20,
+      "total": 451,
+      "has_more": true
+    },
+    "attempts": [
+      {
+        "limit_param": "limit",
+        "offset_param": "page",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": false,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 451,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 451,
+          "has_more": true
+        }
+      },
+      {
+        "limit_param": "limit",
+        "offset_param": "offset",
+        "returned_with_limit_3": 3,
+        "limit_honoured": true,
+        "offset_honoured": true,
+        "server_echo_page1": {
+          "limit": 3,
+          "offset": 0,
+          "count": 3,
+          "total": 451,
+          "has_more": true
+        },
+        "server_echo_page2": {
+          "limit": 3,
+          "offset": 3,
+          "count": 3,
+          "total": 451,
+          "has_more": true
+        }
+      }
+    ]
+  }
+}

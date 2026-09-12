@@ -39,6 +39,7 @@ Output:
     data/_manifest.json                    summary: counts, sha256, config
 """
 
+import base64
 import hashlib
 import json
 import os
@@ -69,6 +70,12 @@ if not BASE_URL.strip("/") or not API_KEY:
 
 CITY = os.environ.get("CITY", "")
 ASSIGNED_LOCALITY = os.environ.get("ASSIGNED_LOCALITY", "")
+
+# The data endpoints reject a bare key with "missing bearer token - log in at
+# POST /auth/login first", so the dump logs in as a demo user before paging.
+DEMO_EMAIL = os.environ.get("DEMO_EMAIL", "demo1@ivy.homes")
+DEMO_PASSWORD = os.environ.get("DEMO_PASSWORD", "")
+LOGIN_PATH = "/auth/login"
 
 OUT = Path(os.environ.get("OUT_DIR", "data"))
 RAW = OUT / "raw"
@@ -112,15 +119,14 @@ BY_ID_PATHS = [
 # Filled in automatically from the probe, but you can pin it here if needed.
 COLLECTIONS_OVERRIDE = []  # e.g. ["/v1/listings", "/v1/rentals", "/v1/projects"]
 
-# Auth schemes to try. The DOCUMENTED one goes first (query param api_key).
-# Every scheme is tried and its status recorded — which ones work is itself
-# an `auth` finding. The documented scheme is used if it works, otherwise the
+# Where the API key might go. The DOCUMENTED placement goes first (query param
+# api_key). Every placement is tried — alone, then combined with a session
+# token — and every status recorded, because which one works is itself an
+# `auth` finding. The documented placement is used if it works, otherwise the
 # first that does.
-AUTH_SCHEMES = [
+KEY_SCHEMES = [
     ("query",  "api_key", "{key}"),
     ("header", "X-API-Key", "{key}"),
-    ("header", "Authorization", "Bearer {key}"),
-    ("header", "Authorization", "{key}"),
     ("header", "api-key", "{key}"),
 ]
 
@@ -149,8 +155,12 @@ REQUEST_COUNT = 0
 # HTTP
 # ---------------------------------------------------------------------------
 
-def call(path, params=None, auth=None, note=""):
-    """One GET. Logs everything. Backs off on 429. Never raises on 4xx/5xx."""
+def call(path, params=None, creds=None, note="", method="GET", json_body=None):
+    """One request. Logs everything. Backs off on 429. Never raises on 4xx/5xx.
+
+    `creds` is a list of (kind, name, value) triples — kind is "header" or
+    "query" — so a key placement and a session token can be combined.
+    """
     global REQUEST_COUNT
 
     if REQUEST_COUNT >= HARD_REQUEST_CAP:
@@ -160,15 +170,14 @@ def call(path, params=None, auth=None, note=""):
     headers = {"Accept": "application/json"}
     params = dict(params or {})
 
-    if auth:
-        kind, name, template = auth
-        value = template.format(key=API_KEY)
+    for kind, name, value in (creds or []):
         (headers if kind == "header" else params)[name] = value
 
     for attempt in range(4):
         started = time.monotonic()
         try:
-            resp = requests.get(url, headers=headers, params=params, timeout=TIMEOUT)
+            resp = requests.request(method, url, headers=headers, params=params,
+                                    json=json_body, timeout=TIMEOUT)
         except requests.RequestException as exc:
             REQUEST_COUNT += 1
             REQUEST_LOG.append({"path": path, "params": params, "error": str(exc), "note": note})
@@ -181,6 +190,7 @@ def call(path, params=None, auth=None, note=""):
                        for k, v in params.items()}
         REQUEST_LOG.append({
             "at": datetime.now(timezone.utc).isoformat(),
+            "method": method,
             "path": path,
             "params": safe_params,
             "status": resp.status_code,
@@ -252,34 +262,125 @@ def record_id(rec):
     return None
 
 
-def detect_auth():
-    """Try every auth scheme. Record all. Prefer the documented one if it works."""
-    target = next((p for p in CANDIDATE_ENDPOINTS if p != "/health"), "/health")
-    attempts = []
-    working = []
+def key_cred(scheme):
+    kind, name, template = scheme
+    return (kind, name, template.format(key=API_KEY))
 
-    for scheme in AUTH_SCHEMES:
-        resp, body = call(target, auth=scheme, note="auth probe")
-        status = resp.status_code if resp else None
+
+def jwt_claims(token):
+    """Decode the payload of a JWT without verifying it. None if not a JWT."""
+    try:
+        parts = token.split(".")
+        if len(parts) != 3:
+            return None
+        payload = parts[1] + "=" * (-len(parts[1]) % 4)
+        return json.loads(base64.urlsafe_b64decode(payload))
+    except Exception:
+        return None
+
+
+def status_of(resp):
+    # requests.Response is falsy on 4xx/5xx, so never write `if resp`.
+    return resp.status_code if resp is not None else None
+
+
+def login(key_scheme):
+    """POST /auth/login as the demo user. Returns (token, record) or (None, record)."""
+    if not DEMO_PASSWORD:
+        return None, {"skipped": "DEMO_PASSWORD not set in .env"}
+    resp, body = call(LOGIN_PATH, creds=[key_cred(key_scheme)], method="POST",
+                      json_body={"email": DEMO_EMAIL, "password": DEMO_PASSWORD},
+                      note=f"login via {key_scheme[1]}")
+    status = status_of(resp)
+    # Documented field is `token`; the server actually sends `access_token`.
+    token = None
+    if isinstance(body, dict):
+        token = body.get("access_token") or body.get("token")
+    claims = jwt_claims(token) if token else None
+    safe_body = dict(body) if isinstance(body, dict) else body
+    if isinstance(safe_body, dict):
+        for secret in ("token", "access_token", "refresh_token"):
+            if secret in safe_body:
+                safe_body[secret] = "<redacted>"
+    record = {
+        "key_scheme": list(key_scheme),
+        "status": status,
+        "body": safe_body,
+        "jwt_claims": claims,
+        "lifetime_from_claims_seconds": (claims["exp"] - claims["iat"])
+        if claims and "exp" in claims and "iat" in claims else None,
+    }
+    return token, record
+
+
+def detect_auth():
+    """Work out what the data endpoints actually require. Record everything.
+
+    Three phases, each written to data/_probe/auth.json:
+      1. key alone, every placement          - does the documented one work?
+      2. login, trying each placement          - which does /auth/login accept?
+      3. key + session token, every placement  - what do data endpoints want?
+    """
+    target = next((p for p in CANDIDATE_ENDPOINTS if p != "/health"), "/health")
+    report = {"documented_key_placement": list(KEY_SCHEMES[0]),
+              "key_only": [], "login": [], "key_plus_token": []}
+
+    print("  phase 1: key only")
+    for scheme in KEY_SCHEMES:
+        resp, body = call(target, creds=[key_cred(scheme)], note="auth probe: key only")
+        status = status_of(resp)
         detail = body.get("detail") if isinstance(body, dict) else None
-        attempts.append({"scheme": list(scheme), "status": status, "detail": detail})
-        print(f"  auth {scheme[0]}:{scheme[1]}: {status}")
+        report["key_only"].append({"scheme": list(scheme), "status": status, "detail": detail})
+        print(f"    {scheme[0]}:{scheme[1]} -> {status}  {detail or ''}")
+        if status == 200:
+            report["chosen"] = {"key": list(scheme), "token": False}
+            write_json(PROBE / "auth.json", report)
+            return [key_cred(scheme)]
+
+    print("  phase 2: login")
+    token, token_scheme = None, None
+    for scheme in KEY_SCHEMES:
+        tok, rec = login(scheme)
+        report["login"].append(rec)
+        print(f"    login via {scheme[0]}:{scheme[1]} -> {rec.get('status', rec.get('skipped'))}")
+        if tok:
+            token, token_scheme = tok, scheme
+            break
+
+    if not token:
+        write_json(PROBE / "auth.json", report)
+        sys.exit("Could not log in. Data endpoints demand a bearer token; set "
+                 "DEMO_EMAIL and DEMO_PASSWORD in .env (they are in the registration "
+                 "email) and check data/_probe/auth.json for what the server said.")
+
+    bearer = ("header", "Authorization", f"Bearer {token}")
+
+    print("  phase 3: key + token")
+    working = []
+    for scheme in KEY_SCHEMES:
+        resp, body = call(target, creds=[key_cred(scheme), bearer],
+                          note="auth probe: key + token")
+        status = status_of(resp)
+        detail = body.get("detail") if isinstance(body, dict) else None
+        report["key_plus_token"].append({"scheme": list(scheme), "status": status, "detail": detail})
+        print(f"    {scheme[0]}:{scheme[1]} + bearer -> {status}  {detail or ''}")
         if status == 200:
             working.append(scheme)
 
+    # Token alone, no key: is the key even checked once a session exists?
+    resp, body = call(target, creds=[bearer], note="auth probe: token only")
+    report["token_only"] = {"status": status_of(resp),
+                            "detail": body.get("detail") if isinstance(body, dict) else None}
+    print(f"    token only -> {report['token_only']['status']}  {report['token_only']['detail'] or ''}")
+
     chosen = working[0] if working else None
-    write_json(PROBE / "auth.json", {
-        "documented": list(AUTH_SCHEMES[0]),
-        "documented_works": AUTH_SCHEMES[0] in working,
-        "chosen": list(chosen) if chosen else None,
-        "all_working": [list(s) for s in working],
-        "attempts": attempts,
-    })
+    report["chosen"] = {"key": list(chosen) if chosen else None, "token": True,
+                        "login_key_scheme": list(token_scheme)}
+    write_json(PROBE / "auth.json", report)
     if not chosen:
-        sys.exit("No auth scheme returned 200. Check BASE_URL and API_KEY, and re-read "
-                 "the auth section of API_REFERENCE.md — the header name may be one of "
-                 "its lies, in which case add the real one to AUTH_SCHEMES.")
-    return chosen
+        sys.exit("Logged in, but no key placement + token combination returned 200. "
+                 "Read data/_probe/auth.json.")
+    return [key_cred(chosen), bearer]
 
 
 def probe_unauthenticated():
@@ -288,7 +389,7 @@ def probe_unauthenticated():
     for path in CANDIDATE_ENDPOINTS:
         resp, body = call(path, note="unauth probe")
         report[path] = {
-            "status": resp.status_code if resp else None,
+            "status": status_of(resp),
             "body": body,
         }
         print(f"  {path} (no key): {report[path]['status']}")
@@ -296,12 +397,12 @@ def probe_unauthenticated():
     return report
 
 
-def probe_endpoints(auth):
+def probe_endpoints(creds):
     """Hit every candidate path once. Record what exists and what it looks like."""
     report = {}
     for path in CANDIDATE_ENDPOINTS:
-        resp, body = call(path, auth=auth, note="endpoint probe")
-        status = resp.status_code if resp else None
+        resp, body = call(path, creds=creds, note="endpoint probe")
+        status = status_of(resp)
         key, records = find_records(body)
         report[path] = {
             "status": status,
@@ -321,7 +422,7 @@ def probe_endpoints(auth):
     return report
 
 
-def detect_pagination(path, auth):
+def detect_pagination(path, creds):
     """Prove which param names actually paginate. Assume nothing.
 
     A scheme passes only if BOTH hold:
@@ -333,7 +434,7 @@ def detect_pagination(path, auth):
     """
     attempts = []
 
-    _, baseline_body = call(path, auth=auth, note="pagination baseline")
+    _, baseline_body = call(path, creds=creds, note="pagination baseline")
     _, baseline_records = find_records(baseline_body)
     default_page_size = len(baseline_records)
     baseline_echo = {k: v for k, v in (baseline_body or {}).items()
@@ -343,10 +444,10 @@ def detect_pagination(path, auth):
         # page-number schemes are 1-based; offset schemes are 0-based
         second_page_value = 2 if offset_p == "page" else 3
 
-        _, body_a = call(path, {limit_p: 3}, auth=auth, note=f"pagination {limit_p}")
+        _, body_a = call(path, {limit_p: 3}, creds=creds, note=f"pagination {limit_p}")
         _, recs_a = find_records(body_a)
         _, body_b = call(path, {limit_p: 3, offset_p: second_page_value},
-                         auth=auth, note=f"pagination {limit_p}+{offset_p}")
+                         creds=creds, note=f"pagination {limit_p}+{offset_p}")
         _, recs_b = find_records(body_b)
 
         limit_honoured = 0 < len(recs_a) <= 3
@@ -390,7 +491,7 @@ def detect_pagination(path, auth):
 # Dumping
 # ---------------------------------------------------------------------------
 
-def dump_collection(path, auth, scheme):
+def dump_collection(path, creds, scheme):
     """Page to the very end, recording what was asked vs what the server did.
 
     Advances by what the server actually returned, never by what was requested.
@@ -421,9 +522,9 @@ def dump_collection(path, auth, scheme):
             stop_reason = "no working pagination params; one response is all we can get"
             break
 
-        resp, body = call(path, params, auth=auth, note=f"dump {name} page {page_no}")
-        if resp is None or resp.status_code != 200:
-            stop_reason = f"page {page_no} returned {resp.status_code if resp else 'error'}"
+        resp, body = call(path, params, creds=creds, note=f"dump {name} page {page_no}")
+        if status_of(resp) != 200:
+            stop_reason = f"page {page_no} returned {status_of(resp) or 'error'}"
             print(f"  {stop_reason}, stopping")
             break
 
@@ -526,7 +627,7 @@ def integrity_check(path, records, page_log):
     }
 
 
-def probe_by_id(auth, dumped):
+def probe_by_id(creds, dumped):
     """Documented single-record paths, once each, with a real ID from the dump."""
     report = {}
     for collection, template in BY_ID_PATHS:
@@ -536,8 +637,8 @@ def probe_by_id(auth, dumped):
             report[template] = {"status": None, "skipped": "no record to take an id from"}
             continue
         path = template.replace("{id}", str(rid))
-        resp, body = call(path, auth=auth, note="by-id probe")
-        status = resp.status_code if resp else None
+        resp, body = call(path, creds=creds, note="by-id probe")
+        status = status_of(resp)
         _, recs = find_records(body)
         report[template] = {
             "status": status,
@@ -575,11 +676,11 @@ def main():
     probe_unauthenticated()
 
     print("\n2. Detecting auth scheme")
-    auth = detect_auth()
-    print(f"   -> using {auth[0]}:{auth[1]}")
+    creds = detect_auth()
+    print(f"   -> using {' + '.join(f'{k}:{n}' for k, n, _ in creds)}")
 
     print("\n3. Probing endpoints")
-    endpoints = probe_endpoints(auth)
+    endpoints = probe_endpoints(creds)
 
     collections = COLLECTIONS_OVERRIDE or [
         p for p, info in endpoints.items()
@@ -588,14 +689,14 @@ def main():
     print(f"\n   collections to dump: {collections}")
 
     print("\n4. Detecting pagination")
-    schemes = {p: detect_pagination(p, auth) for p in collections}
+    schemes = {p: detect_pagination(p, creds) for p in collections}
     write_json(PROBE / "pagination.json", schemes)
 
     print("\n5. Dumping")
     dumped, integrity, counts = {}, {}, {}
     for path in collections:
         print(f"\n  {path}")
-        records, page_log = dump_collection(path, auth, schemes[path])
+        records, page_log = dump_collection(path, creds, schemes[path])
         dumped[path] = records
         counts[path] = len(records)
         integrity[path] = integrity_check(path, records, page_log)
@@ -606,7 +707,7 @@ def main():
     write_json(PROBE / "integrity.json", integrity)
 
     print("\n6. Probing documented single-record paths")
-    probe_by_id(auth, dumped)
+    probe_by_id(creds, dumped)
 
     (PROBE / "requests.jsonl").write_text(
         "\n".join(json.dumps(r) for r in REQUEST_LOG), encoding="utf-8"
@@ -620,7 +721,7 @@ def main():
         "record_counts": counts,
         "total_requests": REQUEST_COUNT,
         "duration_seconds": round(time.time() - started, 1),
-        "auth_scheme": list(auth),
+        "auth": [f"{kind}:{name}" for kind, name, _ in creds],
         "requested_limit": REQUESTED_LIMIT,
         "pagination_schemes": {p: {k: v for k, v in s.items() if k != "attempts"}
                                for p, s in schemes.items()},

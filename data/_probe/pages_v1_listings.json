@@ -1,0 +1,1164 @@
+{
+  "path": "/v1/listings",
+  "stop_reason": "empty page",
+  "pages": [
+    {
+      "page": 0,
+      "requested": {
+        "limit": 200,
+        "offset": 0
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 0,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 1,
+      "requested": {
+        "limit": 200,
+        "offset": 50
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 50,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 2,
+      "requested": {
+        "limit": 200,
+        "offset": 100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 100,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 3,
+      "requested": {
+        "limit": 200,
+        "offset": 150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 150,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 4,
+      "requested": {
+        "limit": 200,
+        "offset": 200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 200,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 5,
+      "requested": {
+        "limit": 200,
+        "offset": 250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 250,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 6,
+      "requested": {
+        "limit": 200,
+        "offset": 300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 300,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 7,
+      "requested": {
+        "limit": 200,
+        "offset": 350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 350,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 8,
+      "requested": {
+        "limit": 200,
+        "offset": 400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 400,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 9,
+      "requested": {
+        "limit": 200,
+        "offset": 450
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 450,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 10,
+      "requested": {
+        "limit": 200,
+        "offset": 500
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 500,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 11,
+      "requested": {
+        "limit": 200,
+        "offset": 550
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 550,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 12,
+      "requested": {
+        "limit": 200,
+        "offset": 600
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 600,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 13,
+      "requested": {
+        "limit": 200,
+        "offset": 650
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 650,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 14,
+      "requested": {
+        "limit": 200,
+        "offset": 700
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 700,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 15,
+      "requested": {
+        "limit": 200,
+        "offset": 750
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 750,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 16,
+      "requested": {
+        "limit": 200,
+        "offset": 800
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 800,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 17,
+      "requested": {
+        "limit": 200,
+        "offset": 850
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 850,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 18,
+      "requested": {
+        "limit": 200,
+        "offset": 900
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 900,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 19,
+      "requested": {
+        "limit": 200,
+        "offset": 950
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 950,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 20,
+      "requested": {
+        "limit": 200,
+        "offset": 1000
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1000,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 21,
+      "requested": {
+        "limit": 200,
+        "offset": 1050
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1050,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 22,
+      "requested": {
+        "limit": 200,
+        "offset": 1100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1100,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 23,
+      "requested": {
+        "limit": 200,
+        "offset": 1150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1150,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 24,
+      "requested": {
+        "limit": 200,
+        "offset": 1200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1200,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 25,
+      "requested": {
+        "limit": 200,
+        "offset": 1250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1250,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 26,
+      "requested": {
+        "limit": 200,
+        "offset": 1300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1300,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 27,
+      "requested": {
+        "limit": 200,
+        "offset": 1350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1350,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 28,
+      "requested": {
+        "limit": 200,
+        "offset": 1400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1400,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 29,
+      "requested": {
+        "limit": 200,
+        "offset": 1450
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1450,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 30,
+      "requested": {
+        "limit": 200,
+        "offset": 1500
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1500,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 31,
+      "requested": {
+        "limit": 200,
+        "offset": 1550
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1550,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 32,
+      "requested": {
+        "limit": 200,
+        "offset": 1600
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1600,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 33,
+      "requested": {
+        "limit": 200,
+        "offset": 1650
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1650,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 34,
+      "requested": {
+        "limit": 200,
+        "offset": 1700
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1700,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 35,
+      "requested": {
+        "limit": 200,
+        "offset": 1750
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1750,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 36,
+      "requested": {
+        "limit": 200,
+        "offset": 1800
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1800,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 37,
+      "requested": {
+        "limit": 200,
+        "offset": 1850
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1850,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 38,
+      "requested": {
+        "limit": 200,
+        "offset": 1900
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1900,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 39,
+      "requested": {
+        "limit": 200,
+        "offset": 1950
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 1950,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 40,
+      "requested": {
+        "limit": 200,
+        "offset": 2000
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2000,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 41,
+      "requested": {
+        "limit": 200,
+        "offset": 2050
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2050,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 42,
+      "requested": {
+        "limit": 200,
+        "offset": 2100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2100,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 43,
+      "requested": {
+        "limit": 200,
+        "offset": 2150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2150,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 44,
+      "requested": {
+        "limit": 200,
+        "offset": 2200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2200,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 45,
+      "requested": {
+        "limit": 200,
+        "offset": 2250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2250,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 46,
+      "requested": {
+        "limit": 200,
+        "offset": 2300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2300,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 47,
+      "requested": {
+        "limit": 200,
+        "offset": 2350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2350,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 48,
+      "requested": {
+        "limit": 200,
+        "offset": 2400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2400,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 49,
+      "requested": {
+        "limit": 200,
+        "offset": 2450
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2450,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 50,
+      "requested": {
+        "limit": 200,
+        "offset": 2500
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2500,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 51,
+      "requested": {
+        "limit": 200,
+        "offset": 2550
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2550,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 52,
+      "requested": {
+        "limit": 200,
+        "offset": 2600
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2600,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 53,
+      "requested": {
+        "limit": 200,
+        "offset": 2650
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2650,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 54,
+      "requested": {
+        "limit": 200,
+        "offset": 2700
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2700,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 55,
+      "requested": {
+        "limit": 200,
+        "offset": 2750
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2750,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 56,
+      "requested": {
+        "limit": 200,
+        "offset": 2800
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2800,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 57,
+      "requested": {
+        "limit": 200,
+        "offset": 2850
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2850,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 58,
+      "requested": {
+        "limit": 200,
+        "offset": 2900
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2900,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 59,
+      "requested": {
+        "limit": 200,
+        "offset": 2950
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 2950,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 60,
+      "requested": {
+        "limit": 200,
+        "offset": 3000
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3000,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 61,
+      "requested": {
+        "limit": 200,
+        "offset": 3050
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3050,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 62,
+      "requested": {
+        "limit": 200,
+        "offset": 3100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3100,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 63,
+      "requested": {
+        "limit": 200,
+        "offset": 3150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3150,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 64,
+      "requested": {
+        "limit": 200,
+        "offset": 3200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3200,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 65,
+      "requested": {
+        "limit": 200,
+        "offset": 3250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3250,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 66,
+      "requested": {
+        "limit": 200,
+        "offset": 3300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3300,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 67,
+      "requested": {
+        "limit": 200,
+        "offset": 3350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3350,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 68,
+      "requested": {
+        "limit": 200,
+        "offset": 3400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3400,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 69,
+      "requested": {
+        "limit": 200,
+        "offset": 3450
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3450,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 70,
+      "requested": {
+        "limit": 200,
+        "offset": 3500
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3500,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 71,
+      "requested": {
+        "limit": 200,
+        "offset": 3550
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3550,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 72,
+      "requested": {
+        "limit": 200,
+        "offset": 3600
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3600,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 73,
+      "requested": {
+        "limit": 200,
+        "offset": 3650
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3650,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 74,
+      "requested": {
+        "limit": 200,
+        "offset": 3700
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3700,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 75,
+      "requested": {
+        "limit": 200,
+        "offset": 3750
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3750,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 76,
+      "requested": {
+        "limit": 200,
+        "offset": 3800
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3800,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 77,
+      "requested": {
+        "limit": 200,
+        "offset": 3850
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3850,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 78,
+      "requested": {
+        "limit": 200,
+        "offset": 3900
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3900,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 79,
+      "requested": {
+        "limit": 200,
+        "offset": 3950
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 3950,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 80,
+      "requested": {
+        "limit": 200,
+        "offset": 4000
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4000,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 81,
+      "requested": {
+        "limit": 200,
+        "offset": 4050
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4050,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 82,
+      "requested": {
+        "limit": 200,
+        "offset": 4100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4100,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 83,
+      "requested": {
+        "limit": 200,
+        "offset": 4150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4150,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 84,
+      "requested": {
+        "limit": 200,
+        "offset": 4200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4200,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 85,
+      "requested": {
+        "limit": 200,
+        "offset": 4250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4250,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 86,
+      "requested": {
+        "limit": 200,
+        "offset": 4300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4300,
+      "echoed_total": 4224,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 87,
+      "requested": {
+        "limit": 200,
+        "offset": 4350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4350,
+      "echoed_total": 4224,
+      "more_remaining_signal": false,
+      "returned": 50,
+      "page_short": false,
+      "disagreement": "page full but server says no more remain"
+    },
+    {
+      "page": 88,
+      "requested": {
+        "limit": 200,
+        "offset": 4400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 4400,
+      "echoed_total": 4224,
+      "more_remaining_signal": false,
+      "returned": 0,
+      "page_short": true
+    }
+  ]
+}

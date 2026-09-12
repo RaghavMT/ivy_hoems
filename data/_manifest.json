@@ -1,0 +1,92 @@
+{
+  "dumped_at": "2026-09-12T12:17:34.349888+00:00",
+  "base_url": "https://solve.ivy.homes/",
+  "key_fingerprint": "83E0",
+  "city": "Hyderabad",
+  "assigned_locality": "Madhapur",
+  "record_counts": {
+    "/v1/listings": 4400,
+    "/v1/rentals": 1650,
+    "/v1/projects": 470
+  },
+  "total_requests": 174,
+  "duration_seconds": 96.7,
+  "auth": [
+    "header:X-API-Key",
+    "header:Authorization"
+  ],
+  "requested_limit": 200,
+  "pagination_schemes": {
+    "/v1/listings": {
+      "path": "/v1/listings",
+      "limit_param": "limit",
+      "offset_param": "offset",
+      "zero_based": true,
+      "documented_scheme_works": false,
+      "default_page_size": 20,
+      "baseline_echo": {
+        "limit": 20,
+        "offset": 0,
+        "count": 20,
+        "total": 4224,
+        "has_more": true
+      }
+    },
+    "/v1/rentals": {
+      "path": "/v1/rentals",
+      "limit_param": "limit",
+      "offset_param": "offset",
+      "zero_based": true,
+      "documented_scheme_works": false,
+      "default_page_size": 20,
+      "baseline_echo": {
+        "limit": 20,
+        "offset": 0,
+        "count": 20,
+        "total": 1584,
+        "has_more": true
+      }
+    },
+    "/v1/projects": {
+      "path": "/v1/projects",
+      "limit_param": "limit",
+      "offset_param": "offset",
+      "zero_based": true,
+      "documented_scheme_works": false,
+      "default_page_size": 20,
+      "baseline_echo": {
+        "limit": 20,
+        "offset": 0,
+        "count": 20,
+        "total": 451,
+        "has_more": true
+      }
+    }
+  },
+  "resources": {
+    "v1_listings": {
+      "records": 4400,
+      "pages": 89,
+      "echoed_limits": [
+        50
+      ],
+      "sha256": "140f976c2d58dcf080e76a093037cd5d42fc113d85510e1007e37f5037e48786"
+    },
+    "v1_rentals": {
+      "records": 1650,
+      "pages": 34,
+      "echoed_limits": [
+        50
+      ],
+      "sha256": "e92eb312abec0124c6f050532dd647bea0d68296954bc42fe6305b118aa8105f"
+    },
+    "v1_projects": {
+      "records": 470,
+      "pages": 10,
+      "echoed_limits": [
+        50
+      ],
+      "sha256": "924ffed40abc6dbae94c541071cf520a2ec57427e4a88103f9ab70a1ff368a93"
+    }
+  }
+}

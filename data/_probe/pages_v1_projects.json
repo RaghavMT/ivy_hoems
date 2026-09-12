@@ -1,0 +1,136 @@
+{
+  "path": "/v1/projects",
+  "stop_reason": "short page",
+  "pages": [
+    {
+      "page": 0,
+      "requested": {
+        "limit": 200,
+        "offset": 0
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 0,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 1,
+      "requested": {
+        "limit": 200,
+        "offset": 50
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 50,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 2,
+      "requested": {
+        "limit": 200,
+        "offset": 100
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 100,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 3,
+      "requested": {
+        "limit": 200,
+        "offset": 150
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 150,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 4,
+      "requested": {
+        "limit": 200,
+        "offset": 200
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 200,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 5,
+      "requested": {
+        "limit": 200,
+        "offset": 250
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 250,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 6,
+      "requested": {
+        "limit": 200,
+        "offset": 300
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 300,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 7,
+      "requested": {
+        "limit": 200,
+        "offset": 350
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 350,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 8,
+      "requested": {
+        "limit": 200,
+        "offset": 400
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 400,
+      "echoed_total": 451,
+      "more_remaining_signal": true,
+      "returned": 50,
+      "page_short": false
+    },
+    {
+      "page": 9,
+      "requested": {
+        "limit": 200,
+        "offset": 450
+      },
+      "echoed_limit": 50,
+      "echoed_offset": 450,
+      "echoed_total": 451,
+      "more_remaining_signal": false,
+      "returned": 20,
+      "page_short": true
+    }
+  ]
+}
