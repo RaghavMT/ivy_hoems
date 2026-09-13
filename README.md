@@ -49,6 +49,22 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
   correct even if the server ignores a filter.
 - **Paging** follows the server's real behaviour: 50 records per request, advancing by `offset`,
   stopping when `has_more` is false.
+- **Browsing listings.** Filters live in the address bar, so a filtered view survives a reload and
+  can be shared. The count shown is the number of matching homes loaded, never the server's `total`.
+  If a page comes back with few matches, the app reads further pages, up to three per click, and
+  says when results were filtered in the browser.
+
+## Tests
+
+```bash
+cd web
+npm test                                  # rule tests against the committed dataset, no network
+npm run build && npx vite preview --port 4173
+npm run e2e                               # browser tests in Chrome against the real API
+```
+
+The browser tests read `BASE_URL` and `DEMO_PASSWORD` from the root `.env`. Each one has an API
+request budget, prints how many requests it made, and fails if it goes over.
 
 ## How we decided what to distrust
 

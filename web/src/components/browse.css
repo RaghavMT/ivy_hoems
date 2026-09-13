@@ -1,0 +1,215 @@
+/* Browse pages: filter bar, results header, result cards. Shared by listings and
+   rentals. Tokens come from styles.css. */
+
+/* Filter bar ------------------------------------------------------------- */
+.filter-bar {
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.filter-fields {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+/* Scoped under .filter-bar so it outranks .btn's display regardless of stylesheet order. */
+.filter-bar .filter-toggle {
+  display: none;
+}
+
+.filter-actions {
+  display: flex;
+  gap: var(--space-2);
+  /* Line the buttons up with the inputs, below the labels. */
+  padding-top: calc(var(--text-sm) * 1.55 + var(--space-1));
+}
+
+@media (max-width: 1000px) {
+  .filter-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .filter-actions {
+    padding-top: 0;
+    align-self: end;
+  }
+}
+
+@media (max-width: 720px) {
+  .filter-bar {
+    padding: var(--space-3);
+  }
+
+  .filter-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .filter-bar .filter-toggle {
+    display: flex;
+    width: 100%;
+  }
+
+  .filter-bar:not(.is-open) {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .filter-bar:not(.is-open) .filter-fields {
+    display: none;
+  }
+
+  .filter-bar.is-open .filter-fields {
+    margin-top: var(--space-4);
+    padding: 0 var(--space-1) var(--space-1);
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Results ---------------------------------------------------------------- */
+.results-head {
+  margin-bottom: var(--space-3);
+}
+
+.results-summary {
+  font-weight: 600;
+}
+
+.results-note {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.listing-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.listing-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border-left-width: 3px;
+  border-left-color: transparent;
+}
+
+.listing-card.is-not-live {
+  border-left-color: var(--flag);
+}
+
+.listing-card.is-verified {
+  border-left-color: var(--ivy);
+}
+
+.listing-title {
+  font-size: var(--text-lg);
+  line-height: 1.3;
+}
+
+.listing-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.listing-title a:hover {
+  color: var(--ivy);
+  text-decoration: underline;
+}
+
+.listing-place,
+.listing-details {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+.listing-place {
+  font-weight: 600;
+}
+
+.listing-place span + span,
+.listing-details span + span {
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line-strong);
+}
+
+.listing-place span + span {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.listing-details {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.listing-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+  text-align: right;
+}
+
+.listing-price {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.listing-area {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.listing-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+}
+
+.results-foot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 560px) {
+  .listing-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-4);
+  }
+
+  .listing-side {
+    order: -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--space-3);
+    text-align: left;
+  }
+
+  .listing-badges {
+    justify-content: flex-start;
+    flex-basis: 100%;
+  }
+}
