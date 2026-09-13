@@ -2,27 +2,8 @@
 // React. Persisted to localStorage so a hard refresh keeps the session, and kept in
 // step across tabs through the storage event.
 
-import {
-  loadSession,
-  saveSession,
-  SESSION_STORAGE_KEY,
-  type KeyValueStore,
-  type Session,
-} from './session';
-
-function pickStorage(): KeyValueStore {
-  try {
-    if (typeof window !== 'undefined' && window.localStorage) return window.localStorage;
-  } catch {
-    // Accessing localStorage can throw when site data is blocked.
-  }
-  const memory = new Map<string, string>();
-  return {
-    getItem: (key) => memory.get(key) ?? null,
-    setItem: (key, value) => void memory.set(key, value),
-    removeItem: (key) => void memory.delete(key),
-  };
-}
+import { loadSession, saveSession, SESSION_STORAGE_KEY, type Session } from './session';
+import { pickStorage } from './storage';
 
 const storage = pickStorage();
 const listeners = new Set<() => void>();

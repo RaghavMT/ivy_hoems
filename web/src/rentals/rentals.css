@@ -1,0 +1,46 @@
+/* Rentals pages. Browse and detail layouts come from components/browse.css and
+   listings/detail.css; tokens from styles.css. */
+
+.filter-bar .filter-fields-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+}
+
+@media (max-width: 1000px) {
+  .filter-bar .filter-fields-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .filter-bar .filter-fields-three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar .filter-fields-three {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rent-period {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.detail-price-main .rent-period {
+  font-size: var(--text-lg);
+}
+
+.detail-fact-note {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.detail-seller-title {
+  margin-bottom: var(--space-2);
+  font-weight: 600;
+}

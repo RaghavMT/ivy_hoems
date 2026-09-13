@@ -585,18 +585,25 @@ with the access token, or after some fixed window under thirty minutes, an idle 
 logged out, and the requirement that the app "still works thirty minutes after login" would need
 a timer refreshing every few minutes instead of refresh-on-demand.
 
-**How I tested it:** raised 2026-09-13 ~19:40 IST while designing the frontend's session code,
-before running anything. `analysis/probe_session.py --lifetime` logs in as `demo3` (a user no
-browser test touches), sleeps 1,860 seconds, then calls `/v1/listings` with the stale access token,
-refreshes with the original refresh token, and repeats the data call with the new token. Five
-requests over 31 minutes. Output `data/_probe/session_lifetime.json`, tokens never written.
+**How I tested it:** raised 2026-09-13 while designing the frontend's session code.
+`analysis/probe_session.py --lifetime` logs in as `demo3` (a user no browser test touches), sleeps
+1,860 seconds, then calls `/v1/listings` with the stale access token, refreshes with the original
+refresh token, and repeats the data call with the new token. Four requests over 31 minutes. The
+probe started at 19:37:59 IST and this entry was written a few minutes later, while it was still
+waiting and before any result. Output `data/_probe/session_lifetime.json`, tokens never written.
 
-**Result:** OPEN — running.
+**Result:** CONFIRMED.
 
-**What I found:** _(pending)_
+**What I found:** at 20:08:59 IST, 31 minutes after login, the original access token gets 401 with
+`"access token expired - POST /auth/refresh with your refresh_token"`. The original refresh token
+still returns 200 with a new pair, and `/v1/listings` with the new access token returns 200. The
+refresh token outlives the thirty-minute requirement, and the server's own error message names the
+recovery path.
 
-**Consequence:** decides between refresh-on-demand plus a pre-expiry timer (planned) and a
-keep-alive that refreshes every few minutes while a tab is open.
+**Consequence:** no finding beyond H-018. The client's refresh-and-retry on 401 alone satisfies
+"still working thirty minutes after login", even for a tab left idle. The pre-expiry background
+refresh stays as a second layer, because it also avoids the one failed round trip on a slow server.
+The end-to-end browser check exercises that timer against the real API.
 
 ### H-031 — `POST /auth/logout` does not invalidate the token, despite the documentation
 
@@ -656,3 +663,112 @@ to 17 seconds under that evening's load, a timing comparison would mean nothing.
 
 **Consequence:** no finding. The login screen likewise shows one message for both cases, "The email
 or password is incorrect.", so the app doesn't leak what the server keeps private.
+
+### H-034 — The price filter bounds are exclusive, not "inclusive" as documented
+
+**Why I suspected it:** the browse page re-applies every filter in the browser as a fallback. If
+the client says `price >= min` while the server does `price > min`, a listing priced exactly on a
+bound appears or vanishes depending on which side filtered it. The documentation says "Rupees,
+inclusive" for both bounds, but H-016 only proved the filters narrow results, not where the edge is.
+
+**How I tested it:** offline first, 2026-09-13 ~20:10 IST. The server's `total` is known to
+under-report (the `pagination` finding), so each filtered total in `data/_probe/filters.json` was
+compared with the dump's count under both readings. `max_price=5000000` has two listings priced
+exactly 5,000,000, so it can tell the readings apart. `min_price=20000000` has none on its bound, so
+it can't; for that bound, one request with `min_price=5000000`, which does have listings on the
+bound, is saved to `data/_probe/price_bounds.json`.
+
+**Result:** REFUTED for both bounds. The documentation is right.
+
+**What I found:** `max_price=5000000` reports 293. The dump has 305 listings at or below the bound
+and 303 strictly below. Only the inclusive count reproduces 293. Side observation while doing
+this: the filtered totals fit *rounded* 96% of the true count, not *floored*. Madhapur 430 → 413,
+2BHK 1,383 → 1,328, max_price 305 → 293 all need rounding, where flooring gives one less. The
+unfiltered totals (4,400 → 4,224, 1,650 → 1,584, 470 → 451) fit both. The `pagination` finding's
+description of the rule should say rounded.
+
+`min_price=5000000` (two listings on the bound, `SQU-2003690` and `SQU-2001367`) reports 3,933. The
+dump has 4,097 at or above and 4,095 strictly above; rounded, those predict 3,933 and 3,931. Only
+inclusive matches.
+
+**Consequence:** no finding. The client predicate uses `>=` and `<=`, so a listing priced exactly on
+a bound shows up whether the server or the browser did the filtering.
+
+### H-035 — Project `price_min` is served in two units, like `price_max`, not only in lakhs
+
+**Why I suspected it:** not predicted. While pulling fixtures for the frontend's conversion tests on
+2026-09-13 ~20:20 IST, the lowest raw `price_min` was 1.0. Under the `units` finding's rule
+("price_min is in lakhs") that is a ₹1 lakh starting price for a Hyderabad flat. Honest note on
+order: this entry was written just after the first check below, not before it.
+
+**How I tested it:** the same three checks the `units` finding used for `price_max`, applied to
+`price_min` over all 470 projects in the dump, no API calls.
+
+1. *Gap in raw values.* Is there an empty range separating two populations?
+2. *Price per square foot at `min_area_sqft`*, against the listing market band (₹6,463–13,903 per
+   sq ft) the finding established.
+3. *Ordering.* Does min stay at or below max for every project under the new rule?
+
+A fourth check was tried and dropped: whether each project's sibling listings fall inside its
+converted range. Under a loose tolerance both readings pass (467 vs 466 of the projects that have
+listings), so it can't separate them. Resale listings needn't match a developer's launch range.
+
+**Result:** CONFIRMED.
+
+**What I found:** raw `price_min` is either 1.00–1.43 (90 projects) or 31.4–99.9 (380 projects), with
+nothing served in between. For the 90 low values, the lakh reading gives ₹75–105 per sq ft, which
+is impossible; the crore reading gives ₹7,505–10,522, putting all 90 inside the market band. The 380 higher values
+only make sense as lakhs. With "below 10 means crores, otherwise lakhs" applied to both fields,
+0 of 470 projects end up with min above max. Example: `P20004` raw min 1.21, max 2.58 is ₹1.21 Cr –
+₹2.58 Cr, not ₹1.21 lakh – ₹2.58 Cr.
+
+**Consequence:** the `units` finding on `/v1/projects` should say `price_min` is also split,
+90 in crores and 380 in lakhs, for the Cowork session to reword. Q7 uses only `price_max`, so no
+answer changes. Frontend: `normaliseProject` applies the threshold rule to both fields, with the
+470-project invariant as a unit test.
+
+Separately, while checking the `sqm` rule for listings: website `magichomes` and `posted_at` at or
+after 2026-06-01 00:00 IST selects exactly the 358 IDs in `analysis/out/evidence.json`
+(`sqm_listing_ids`). That is 344 listings with bedrooms plus 14 plots, whose areas switched unit too
+(e.g. `MAG-2000528`, plot, 212 sq m). The `units` finding on `/v1/listings` says 344. The frontend
+converts all 358.
+
+### H-036 — Some rental deposits are served as a number of months, not rupees
+
+**Why I suspected it:** while choosing spot-check records for the rentals page, `R2000514` showed
+`deposit: 6` against a monthly rent of ₹7,800. The documentation says "`deposit` is the security
+deposit in rupees". A ₹6 deposit is not a real deposit, but "6 months" is exactly how Indian leases
+state one. H-003 found the median deposit is five times the rent, so a deposit written as a month
+count would be small integers in the same range.
+
+**How I tested it:** entry written before running anything beyond seeing that one record. Over all
+1,650 rentals in the dump, no API calls: (1) the distribution of `deposit`, looking for a separate
+low cluster; (2) for any low cluster, whether the values are small whole numbers in the range leases
+use; (3) whether `deposit / price` for the rest sits in that same range, which would make "months"
+the consistent reading; (4) whether anything else about the low group (website, date, locality)
+explains it, the way a website and a date explained the square-metre areas.
+
+**Result:** CONFIRMED.
+
+**What I found:** the deposits split into two groups with nothing between them.
+
+| | Rentals | `deposit` as served | `deposit / price` |
+| --- | --- | --- | --- |
+| website `zerobroker` | 344, every zerobroker rental | whole numbers 2–10 | — |
+| every other website | 1,306 | ₹21,600 and up | an exact whole number 2–10 for all 1,306 |
+
+The largest low value is 10 and the smallest rupee deposit is 21,600. The low values are spread
+evenly over 2–10, matching the spread of the month ratios on the other websites (129–167 records per
+value). No date boundary: zerobroker's month-count records run across its whole posting range, so
+unlike the square-metre areas this is a per-website convention, not a cutover. Example: `R2000514`
+serves a ₹7,800 rent with deposit 6, which is ₹46,800.
+
+Side effect on an earlier entry: H-003 reported the median `deposit / price` as exactly 5.0 over all
+rentals. That median included these 344 month counts. Over the 1,306 rupee deposits the median is
+6.0. H-003's conclusion, that rent is monthly, still stands: every rupee deposit is 2–10 times the
+rent, which is only plausible for monthly rent.
+
+**Consequence:** new `units` finding on `/v1/rentals` (added to `docs/findings-inbox.md`). No answer
+changes: Q5 sums `price`, not `deposit`. Frontend: `normaliseRental` converts a zerobroker deposit
+to rupees by multiplying by the monthly rent, with a whole-dump test that every converted deposit
+is 2–10 months of rent.

@@ -1,0 +1,92 @@
+{
+ "mode": "lifetime",
+ "user": "demo3@ivy.homes",
+ "waited_seconds": 1860,
+ "steps": [
+  {
+   "at": "2026-09-13T14:07:59.109301+00:00",
+   "method": "POST",
+   "path": "/auth/login",
+   "note": "login",
+   "status": 200,
+   "ms": 465,
+   "detail": null,
+   "body_keys": [
+    "access_token",
+    "expires_in",
+    "refresh_token",
+    "refresh_url",
+    "token_type",
+    "user"
+   ],
+   "scalars": {
+    "token_type": "Bearer",
+    "expires_in": 900,
+    "refresh_url": "/auth/refresh"
+   },
+   "expires_in": 900
+  },
+  {
+   "at": "2026-09-13T14:38:59.825509+00:00",
+   "method": "GET",
+   "path": "/v1/listings",
+   "note": "access token after 1860s",
+   "status": 401,
+   "ms": 560,
+   "detail": "access token expired - POST /auth/refresh with your refresh_token",
+   "body_keys": [
+    "detail"
+   ],
+   "scalars": {
+    "detail": "access token expired - POST /auth/refresh with your refresh_token"
+   }
+  },
+  {
+   "at": "2026-09-13T14:39:00.468935+00:00",
+   "method": "POST",
+   "path": "/auth/refresh",
+   "note": "refresh token after 1860s",
+   "status": 200,
+   "ms": 489,
+   "detail": null,
+   "body_keys": [
+    "access_token",
+    "expires_in",
+    "refresh_token",
+    "refresh_url",
+    "token_type",
+    "user"
+   ],
+   "scalars": {
+    "token_type": "Bearer",
+    "expires_in": 900,
+    "refresh_url": "/auth/refresh"
+   }
+  },
+  {
+   "at": "2026-09-13T14:39:01.161707+00:00",
+   "method": "GET",
+   "path": "/v1/listings",
+   "note": "data call with refreshed token",
+   "status": 200,
+   "ms": 538,
+   "detail": null,
+   "body_keys": [
+    "count",
+    "has_more",
+    "limit",
+    "offset",
+    "results",
+    "total"
+   ],
+   "scalars": {
+    "limit": 1,
+    "offset": 0,
+    "count": 1,
+    "total": 4224,
+    "has_more": true
+   }
+  }
+ ],
+ "run_at": "2026-09-13T14:39:01.164279+00:00"
+}

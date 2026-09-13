@@ -36,6 +36,7 @@ KEY = os.environ["API_KEY"]
 PASSWORD = os.environ.get("DEMO_PASSWORD", "")
 DELAY = float(os.environ.get("DELAY_SECONDS", "0.15"))
 H = {"X-API-Key": KEY, "Accept": "application/json"}
+REQUESTS_MADE = 0  # reported at the end, for docs/api-calls.md
 
 
 def now():
@@ -43,6 +44,8 @@ def now():
 
 
 def call(method, path, token=None, body=None, note=""):
+    global REQUESTS_MADE
+    REQUESTS_MADE += 1
     headers = dict(H)
     if token:
         headers["Authorization"] = f"Bearer {token}"
@@ -163,8 +166,9 @@ def main():
         out = ROOT / "data" / "_probe" / "session.json"
 
     result["run_at"] = now()
+    result["requests_made"] = REQUESTS_MADE
     out.write_text(json.dumps(result, indent=1), encoding="utf-8")
-    print(f"wrote {out.relative_to(ROOT)}")
+    print(f"wrote {out.relative_to(ROOT)}  ({REQUESTS_MADE} API requests)")
 
 
 if __name__ == "__main__":
