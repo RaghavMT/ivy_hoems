@@ -1,0 +1,124 @@
+/* Saved homes page and the Save button. Tokens come from styles.css. */
+
+.save-button {
+  background: var(--paper);
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.save-button:hover:not(:disabled) {
+  border-color: var(--ivy);
+  color: var(--ivy);
+}
+
+.save-button.is-saved {
+  background: var(--ivy-wash);
+  border-color: var(--ivy);
+  color: var(--ivy);
+}
+
+.save-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.save-button.is-saved .save-icon {
+  fill: currentColor;
+}
+
+.saved-count {
+  margin-bottom: var(--space-3);
+}
+
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.saved-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+}
+
+.saved-title {
+  font-size: var(--text-lg);
+  line-height: 1.3;
+}
+
+.saved-title a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.saved-title a:hover {
+  color: var(--ivy);
+  text-decoration: underline;
+}
+
+.saved-meta {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-3);
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.saved-meta span + span {
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--line-strong);
+}
+
+.saved-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-1);
+}
+
+.saved-price {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.saved-area {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.saved-note {
+  max-width: 68ch;
+  margin-top: var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .saved-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-4);
+  }
+
+  .saved-side {
+    grid-column: 1;
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-3);
+  }
+
+  .saved-remove {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}

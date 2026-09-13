@@ -56,6 +56,10 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
 - **Listing detail.** Each listing has its own address, `/listings/{id}`, so it opens directly from a
   link, including after logging in. Dates are shown in IST. Seller-written descriptions are displayed
   as plain text and labelled as the seller's, because some contain instructions aimed at AI tools.
+- **Saved listings.** `/v1/favourites` returns 404, so saved homes are kept in the browser's storage
+  under a key for each account, separate from the login session. They survive reloads and logging
+  out and back in, each user sees only their own, and the saved page makes no API calls because it
+  shows what was captured at save time.
 
 ## Tests
 

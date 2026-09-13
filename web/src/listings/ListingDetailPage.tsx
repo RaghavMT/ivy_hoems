@@ -4,6 +4,7 @@ import { StatePanel } from '../components/StatePanel';
 import { formatDateIST, formatInr, formatInrFull, formatSqft } from '../lib/format';
 import { furnishingLabel, listingTitle, titleCase } from '../lib/labels';
 import type { Listing } from '../lib/normalise';
+import { SaveButton } from '../saved/SaveButton';
 import { useListing } from './useListing';
 import './detail.css';
 
@@ -83,6 +84,9 @@ function ListingDetail({ listing }: { listing: Listing }) {
               The source listed these areas in square metres. They are shown here in square feet.
             </p>
           ) : null}
+          <div className="detail-save">
+            <SaveButton listing={listing} />
+          </div>
         </aside>
 
         <div className="detail-main">

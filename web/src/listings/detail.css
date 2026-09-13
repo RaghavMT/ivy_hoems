@@ -89,6 +89,12 @@
   margin-top: var(--space-3);
 }
 
+.detail-save {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
 .detail-main {
   grid-column: 1;
   grid-row: 1;

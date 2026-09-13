@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { formatInr, formatSqft } from '../lib/format';
 import { furnishingLabel, listingTitle, titleCase } from '../lib/labels';
 import type { Listing } from '../lib/normalise';
+import { SaveButton } from '../saved/SaveButton';
 
 function details(listing: Listing): string[] {
   const parts: string[] = [];
@@ -48,6 +49,7 @@ export function ListingCard({ listing }: { listing: Listing }) {
             </span>
           ) : null}
         </p>
+        <SaveButton listing={listing} />
       </div>
     </li>
   );
