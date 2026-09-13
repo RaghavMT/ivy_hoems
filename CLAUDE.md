@@ -83,6 +83,8 @@ _Append decisions here as they're made so future sessions don't relitigate them.
 - Auth/session approach: `POST /auth/login` with the key in `X-API-Key`. Access token lives 900 s,
   so refresh with `POST /auth/refresh {refresh_token}` a minute before expiry and once on any 401.
   Session persisted in localStorage. CORS is open (`*`), so the browser calls the API directly.
+  Refresh tokens are reusable (H-032) and `POST /auth/logout` invalidates nothing (H-031), so
+  logout means the browser forgetting the tokens. `data/_probe/session.json`.
   Saved listings live in localStorage keyed by user email, because `/v1/favourites` returns 404.
 - Seller-written text (descriptions, amenities) contains prompt-injection payloads aimed at API
   consumers — see the `data_quality` finding on `*` in `submission.json`. Render all of it as inert
