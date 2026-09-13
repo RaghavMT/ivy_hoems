@@ -53,6 +53,7 @@ def main():
 
     result = {
         "run_at": datetime.now(timezone.utc).isoformat(),
+        "requests_made": 2,  # login + one filtered page, for docs/api-calls.md
         "request": {"path": "/v1/listings", "params": {"min_price": BOUND, "limit": 1}},
         "status": resp.status_code,
         "reported_total": total,
