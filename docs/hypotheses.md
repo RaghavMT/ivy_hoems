@@ -502,3 +502,77 @@ since a `completeness` finding would follow if it leaked.
 documented.
 
 **Consequence:** no finding. A documented claim that turned out to be true.
+
+### H-016 — One or more documented listing filters (locality, bhk, property_type, price bounds, furnishing, project_status) are accepted with 200 and silently ignored
+
+**Why I suspected it:** the frontend requirement says filters "must actually filter, whether or
+not the server helps you". That phrasing only makes sense if some documented filter params do
+nothing. Also H-027 assumed `?project_id=` works and was never checked directly.
+
+**How I tested it:** `analysis/probe_filters.py` — one unfiltered page of 50 per collection as a
+baseline, then one request per documented filter with a value known to exist in the dump. A filter
+is HONOURED if every returned row satisfies it, IGNORED if the page is byte-identical to the
+baseline, REJECTED on 4xx, PARTIAL otherwise. Twelve filter requests in total, 150 ms apart.
+
+**Result:** REFUTED for every documented filter. CONFIRMED for the one undocumented-as-a-parameter
+claim, `project_id`.
+
+**What I found:** all eleven documented filters are honoured — `locality`, `bhk`, `property_type`,
+`min_price`, `max_price`, `furnishing` on listings; `locality`, `bhk`, `furnishing` on rentals;
+`locality`, `project_status` on projects. Every returned row satisfied the predicate (50/50, or
+33/33 for projects+locality where the whole result fits on one page) and every page differed from
+the unfiltered baseline. The assignment's "whether or not the server helps you" turned out to be a
+prompt to *check*, not a hint that the check would fail.
+
+`?project_id=P20165` on `/v1/listings` is the exception: 200, page identical to the unfiltered
+baseline, 0 of 50 rows in that project, `total` 4224 (the unfiltered total). The documentation never
+lists `project_id` in the parameter table, but the `total_listings` paragraph says it "always agrees
+with what `GET /v1/listings?project_id=...` returns" — and that query returns everything.
+
+**Consequence:** no `filters` finding on the documented parameters; README material. `project_id`
+being ignored is a `filters` finding, and sharpens H-027: the documented cross-check is literally
+impossible via the API, so comparing against per-project counts from the dump was the only route.
+Frontend: server-side filtering is usable for all four required filters, but client-side filtering
+stays as the fallback the assignment asks for. Evidence: `data/_probe/filters.json`.
+
+### H-017 — `sort_by` / `order` are accepted and ignored
+
+**Why I suspected it:** same reasoning as H-016; sorting is the other documented parameter family
+the exhaustive dump never exercised, since the dump only ever paged in default order.
+
+**How I tested it:** same script, six sort requests (price/carpet_area/posted_at/bedroom on
+listings, price_max on projects). HONOURED if the returned values are monotone in the requested
+direction, IGNORED if the page matches the unsorted baseline, NOT_SORTED otherwise. Four cases came
+back NOT_SORTED and the probe keeps only eight values, so `analysis/probe_sort_detail.py` re-fetched
+those four plus one control with the full 50-row page saved (`data/_probe/sorting_full.json`).
+
+**Result:** PARTIAL — `sort_by` is honoured, `order` is ignored.
+
+**What I found:** three separate things, none of which is "sorting is broken".
+
+1. *`order=desc` is silently ignored.* Every page comes back ascending. `sort_by=price&order=desc`
+   is row-for-row identical to `order=asc` (first value -19,260,000, last 2,720,000).
+   `sort_by=bedroom&order=desc` returns fifty studios. `sort_by=price_max&order=desc` on projects
+   ascends. The documented default `asc` is real; the documented alternative does nothing.
+2. *`sort_by=carpet_area` sorts on a canonical square-foot value, not the served field.* The
+   ascending page reads 283 … 400, 401, 402, **37, 37**, 403, 403, **38**, 404, 405, 406, **38**, 411.
+   The five out-of-place rows are all `MAG-` listings posted after 2026-06-01 — precisely the
+   magichomes square-metre cohort from H-002 (37 sqm ≈ 398 sqft, 38 sqm ≈ 409 sqft). The server's
+   sort key is in square feet; only the serialised field changed unit. Independent server-side
+   corroboration of H-002 that did not come from the dump.
+3. *`sort_by=price_max` on projects sorts on canonical rupees.* Ascending page: 60.0 … 99.8, then
+   1.0, 1.0, 1.0, 1.01 … 1.15. That is 32 lakh-denominated projects followed by the crore-denominated
+   ones, with 99.8 lakh correctly placed below 1.0 crore. The server agrees with the 438-crore /
+   32-lakh per-record split in the `units` finding on `/v1/projects`, which the analysis had derived
+   from the price-per-sqft market band alone.
+4. *`sort_by=posted_at` sorts by IST calendar day, not by timestamp.* Within the page the values
+   are not monotone under any field in the dump, nor at UTC-day granularity (the page mixes
+   2026-01-12 and -13 in UTC). Shift by +05:30 and take the date only, and the page is perfectly
+   ascending: 21 rows on 13 Jan IST, 17 on 14 Jan, 12 on 15 Jan, arbitrary order within each day.
+   Second corroboration of H-020 (the `Z` is honest UTC; the business clock is IST), again from the
+   server rather than the dump.
+
+**Consequence:** one `sorting` finding — `order` ignored — plus the `posted_at` day-granularity
+behaviour, which is a second `sorting` finding if the Cowork session judges it reproduced (it is:
+the saved page is in `sorting_full.json`). Frontend: sort client-side for any descending order and
+for recency. Items 2–4 go in the README as the checks that corroborated earlier findings.

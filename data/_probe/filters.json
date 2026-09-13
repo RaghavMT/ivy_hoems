@@ -1,0 +1,384 @@
+{
+  "filters": [
+    {
+      "endpoint": "/v1/listings",
+      "param": "locality",
+      "value": {
+        "locality": "madhapur"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 413,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "SQU-2001771",
+        "ZER-2001640",
+        "100-2002442",
+        "ZER-2000516",
+        "SQU-2003764"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "bhk",
+      "value": {
+        "bhk": 2
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 1328,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "SQU-2003357",
+        "MAG-2000429",
+        "DWE-2002887",
+        "ZER-2001640",
+        "ZER-2000516"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "property_type",
+      "value": {
+        "property_type": "villa"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 303,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "100-2000718",
+        "100-2001900",
+        "ZER-2003680",
+        "100-2000832",
+        "DWE-2000604"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "min_price",
+      "value": {
+        "min_price": 20000000
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 187,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "MAG-2003550",
+        "DWE-2002738",
+        "DWE-2000185",
+        "ZER-2002778",
+        "DWE-2001421"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "max_price",
+      "value": {
+        "max_price": 5000000
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 293,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "MAG-2002456",
+        "MAG-2002761",
+        "ZER-2001838",
+        "ZER-2003691",
+        "ZER-2001710"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "furnishing",
+      "value": {
+        "furnishing": "unfurnished"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 1414,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "100-2000006",
+        "MAG-2000209",
+        "ZER-2002657",
+        "MAG-2003517",
+        "DWE-2002887"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/rentals",
+      "param": "locality",
+      "value": {
+        "locality": "madhapur"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 158,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "R2000004",
+        "R2000021",
+        "R2000023",
+        "R2000032",
+        "R2000034"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/rentals",
+      "param": "bhk",
+      "value": {
+        "bhk": 2
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 654,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "R2000002",
+        "R2000005",
+        "R2000007",
+        "R2000008",
+        "R2000009"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/rentals",
+      "param": "furnishing",
+      "value": {
+        "furnishing": "unfurnished"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 531,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "R2000003",
+        "R2000004",
+        "R2000006",
+        "R2000007",
+        "R2000018"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/projects",
+      "param": "locality",
+      "value": {
+        "locality": "madhapur"
+      },
+      "status": 200,
+      "returned": 33,
+      "matching_the_filter": 33,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 32,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "P20024",
+        "P20031",
+        "P20039",
+        "P20070",
+        "P20071"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/projects",
+      "param": "project_status",
+      "value": {
+        "project_status": "ready to move"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 50,
+      "identical_to_unfiltered_page": false,
+      "reported_total": 157,
+      "verdict": "HONOURED",
+      "first_ids": [
+        "P20004",
+        "P20007",
+        "P20018",
+        "P20032",
+        "P20033"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "param": "project_id",
+      "value": {
+        "project_id": "P20165"
+      },
+      "status": 200,
+      "returned": 50,
+      "matching_the_filter": 0,
+      "identical_to_unfiltered_page": true,
+      "reported_total": 4224,
+      "verdict": "IGNORED",
+      "first_ids": [
+        "MAG-2001953",
+        "ZER-2003858",
+        "100-2000006",
+        "ZER-2004032",
+        "MAG-2000209"
+      ],
+      "detail": null
+    }
+  ],
+  "sorting": [
+    {
+      "endpoint": "/v1/listings",
+      "sort_by": "price",
+      "order": "asc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": true,
+      "identical_to_unsorted_page": false,
+      "verdict": "HONOURED",
+      "first_values": [
+        -19260000,
+        -16390000,
+        -11080000,
+        -9990000,
+        -8880000,
+        -8180000,
+        -7790000,
+        -7370000
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "sort_by": "price",
+      "order": "desc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": false,
+      "identical_to_unsorted_page": false,
+      "verdict": "NOT_SORTED",
+      "first_values": [
+        -19260000,
+        -16390000,
+        -11080000,
+        -9990000,
+        -8880000,
+        -8180000,
+        -7790000,
+        -7370000
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "sort_by": "carpet_area",
+      "order": "asc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": false,
+      "identical_to_unsorted_page": false,
+      "verdict": "NOT_SORTED",
+      "first_values": [
+        283,
+        329,
+        338,
+        340,
+        346,
+        349,
+        350,
+        352
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "sort_by": "posted_at",
+      "order": "desc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": false,
+      "identical_to_unsorted_page": false,
+      "verdict": "NOT_SORTED",
+      "first_values": [
+        "2026-01-12T20:46:00Z",
+        "2026-01-13T08:32:00Z",
+        "2026-01-13T06:13:00Z",
+        "2026-01-12T21:05:00Z",
+        "2026-01-13T07:32:00Z",
+        "2026-01-13T01:22:00Z",
+        "2026-01-13T03:58:00Z",
+        "2026-01-12T19:43:00Z"
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/listings",
+      "sort_by": "bedroom",
+      "order": "asc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": true,
+      "identical_to_unsorted_page": false,
+      "verdict": "HONOURED",
+      "first_values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "detail": null
+    },
+    {
+      "endpoint": "/v1/projects",
+      "sort_by": "price_max",
+      "order": "desc",
+      "status": 200,
+      "returned": 50,
+      "is_sorted": false,
+      "identical_to_unsorted_page": false,
+      "verdict": "NOT_SORTED",
+      "first_values": [
+        60.0,
+        63.5,
+        69.1,
+        71.3,
+        72.1,
+        75.0,
+        75.6,
+        76.5
+      ],
+      "detail": null
+    }
+  ]
+}
