@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader';
 import { StatePanel } from '../components/StatePanel';
+import { useTakingLong } from '../components/useTakingLong';
 import type { ListingFilter } from '../lib/filters';
 import { listingFilterToQuery, parseListingFilter } from '../lib/filterQuery';
 import { resultsSummary } from '../lib/labels';
@@ -10,29 +11,13 @@ import { ListingCard } from './ListingCard';
 import { useListings } from './useListings';
 import '../components/browse.css';
 
-const SLOW_AFTER_MS = 5000;
-
-/** True once `active` has stayed true for `ms`, so slow loads can say so. */
-function useTakingLong(active: boolean, ms: number): boolean {
-  const [slow, setSlow] = useState(false);
-  useEffect(() => {
-    if (!active) {
-      setSlow(false);
-      return;
-    }
-    const timer = window.setTimeout(() => setSlow(true), ms);
-    return () => window.clearTimeout(timer);
-  }, [active, ms]);
-  return slow;
-}
-
 export function ListingsPage() {
   const [params, setParams] = useSearchParams();
   // The address bar is the only place filter state lives.
   const filter = useMemo(() => parseListingFilter(params), [params]);
   const { items, status, error, nextOffset, scanned, loadMore, retry } = useListings(filter);
   const hasMore = nextOffset !== null;
-  const slow = useTakingLong(status === 'loading' || status === 'loading-more', SLOW_AFTER_MS);
+  const slow = useTakingLong(status === 'loading' || status === 'loading-more');
 
   function changeFilter(next: ListingFilter) {
     setParams(listingFilterToQuery(next));

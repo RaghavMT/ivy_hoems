@@ -1,13 +1,12 @@
 // Display text built from structured fields. Seller-written titles are never used
 // for headings: rental titles contradict their own locality field 91% of the time (H-022).
 
-import type { RawListing } from './normalise';
-
 export function titleCase(text: string): string {
   return text.replace(/(^|[\s-])([a-z])/g, (_, sep: string, ch: string) => sep + ch.toUpperCase());
 }
 
-export function listingTitle(listing: Pick<RawListing, 'bedroom' | 'property_type' | 'apartment_name'>): string {
+/** Works for listings and rentals: both carry these structured fields. */
+export function listingTitle(listing: { bedroom: number; property_type: string; apartment_name: string | null }): string {
   const { bedroom, property_type, apartment_name } = listing;
   const kind =
     bedroom > 0 ? `${bedroom} BHK ${property_type}` : property_type === 'plot' ? 'Plot' : `Studio ${property_type}`;
