@@ -1,5 +1,17 @@
 import { describe, expect, it } from 'vitest';
-import { formatInr, formatInrFull, formatSqft } from '../lib/format';
+import { formatDateIST, formatInr, formatInrFull, formatSqft } from '../lib/format';
+
+describe('formatDateIST', () => {
+  it('shows the calendar date in India, not in UTC', () => {
+    // 18:37 UTC on 8 July is 00:07 IST on 9 July.
+    expect(formatDateIST('2026-07-08T18:37:00Z')).toBe('9 Jul 2026');
+    expect(formatDateIST('2026-05-31T20:51:00Z')).toBe('1 Jun 2026');
+  });
+
+  it('keeps the same date when UTC and IST agree', () => {
+    expect(formatDateIST('2026-04-03T05:49:00Z')).toBe('3 Apr 2026');
+  });
+});
 
 describe('formatInr', () => {
   it('shows crores to two decimals, trimming zeros', () => {

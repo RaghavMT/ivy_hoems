@@ -53,6 +53,9 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
   can be shared. The count shown is the number of matching homes loaded, never the server's `total`.
   If a page comes back with few matches, the app reads further pages, up to three per click, and
   says when results were filtered in the browser.
+- **Listing detail.** Each listing has its own address, `/listings/{id}`, so it opens directly from a
+  link, including after logging in. Dates are shown in IST. Seller-written descriptions are displayed
+  as plain text and labelled as the seller's, because some contain instructions aimed at AI tools.
 
 ## Tests
 

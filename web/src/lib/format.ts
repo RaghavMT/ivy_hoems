@@ -33,3 +33,19 @@ export function formatInrFull(amount: number): string {
 export function formatSqft(area: number): string {
   return `${grouped.format(area)} sq ft`;
 }
+
+const istDate = new Intl.DateTimeFormat('en-IN', {
+  timeZone: 'Asia/Kolkata',
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+});
+
+/**
+ * Calendar date in India. API timestamps are honest UTC (H-020), so a listing
+ * posted late in the UTC evening belongs to the next day for a reader in Hyderabad.
+ */
+export function formatDateIST(iso: string): string {
+  const parts = Object.fromEntries(istDate.formatToParts(new Date(iso)).map((p) => [p.type, p.value]));
+  return `${parts.day} ${parts.month} ${parts.year}`;
+}

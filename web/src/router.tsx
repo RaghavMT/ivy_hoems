@@ -4,6 +4,7 @@ import { LoginPage } from './auth/LoginPage';
 import { RequireAuth } from './auth/RequireAuth';
 import { RouteError } from './components/RouteError';
 import { NotFound } from './components/NotFound';
+import { ListingDetailPage } from './listings/ListingDetailPage';
 import { ListingsPage } from './listings/ListingsPage';
 import { RentalsPage } from './rentals/RentalsPage';
 import { ProjectsPage } from './projects/ProjectsPage';
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           { path: 'listings', element: <ListingsPage /> },
+          { path: 'listings/:id', element: <ListingDetailPage /> },
           { path: 'rentals', element: <RentalsPage /> },
           { path: 'projects', element: <ProjectsPage /> },
           { path: 'saved', element: <SavedPage /> },
