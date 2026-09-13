@@ -576,3 +576,83 @@ those four plus one control with the full 50-row page saved (`data/_probe/sortin
 behaviour, which is a second `sorting` finding if the Cowork session judges it reproduced (it is:
 the saved page is in `sorting_full.json`). Frontend: sort client-side for any descending order and
 for recency. Items 2–4 go in the README as the checks that corroborated earlier findings.
+
+### H-030 — The session can be kept alive past thirty minutes by refreshing, even after idling
+
+**Why I suspected it:** H-018 showed a 900-second access token and a refresh endpoint, and one
+refresh worked straight after login. That doesn't show the *refresh token* survives. If it expired
+with the access token, or after some fixed window under thirty minutes, an idle tab would be
+logged out, and the requirement that the app "still works thirty minutes after login" would need
+a timer refreshing every few minutes instead of refresh-on-demand.
+
+**How I tested it:** raised 2026-09-13 ~19:40 IST while designing the frontend's session code,
+before running anything. `analysis/probe_session.py --lifetime` logs in as `demo3` (a user no
+browser test touches), sleeps 1,860 seconds, then calls `/v1/listings` with the stale access token,
+refreshes with the original refresh token, and repeats the data call with the new token. Five
+requests over 31 minutes. Output `data/_probe/session_lifetime.json`, tokens never written.
+
+**Result:** OPEN — running.
+
+**What I found:** _(pending)_
+
+**Consequence:** decides between refresh-on-demand plus a pre-expiry timer (planned) and a
+keep-alive that refreshes every few minutes while a tab is open.
+
+### H-031 — `POST /auth/logout` does not invalidate the token, despite the documentation
+
+**Why I suspected it:** the documentation says logout "invalidates the current token server
+side", but it was written from an old changelog that also claimed 24-hour tokens and no refresh
+flow (both wrong, H-018). An auth section wrong twice was worth checking a third time, and the
+frontend's logout has to be correct either way.
+
+**How I tested it:** `analysis/probe_session.py` (quick mode, as `demo2`) logs in, refreshes, calls
+`POST /auth/logout` with the current access token, then uses that same access token for a data
+call and the same refresh token for a refresh. Run twice at ~19:40 IST; results in
+`data/_probe/session.json`.
+
+**Result:** CONFIRMED, both runs.
+
+**What I found:** logout returns 200 with `{"ok": true, "note": "tokens are stateless; discard
+them client side"}`. The access token then still fetches `/v1/listings` (200) and the refresh token
+still mints a new pair (200). The server's own reply contradicts the documented behaviour.
+
+**Consequence:** candidate `auth` finding on `/auth/logout` for the Cowork session to verify and
+decide on. Frontend: logout clears the stored session in the browser; the call to the endpoint is
+a courtesy that can't be relied on.
+
+### H-032 — Refresh tokens are single-use, so two refreshes racing would log the user out
+
+**Why I suspected it:** rotation is the common production design: each refresh returns a new
+refresh token and burns the old one. A browser app refreshes from more than one place (a pre-expiry
+timer, a retry after a 401, a second tab, React running effects twice in development), and under
+strict rotation the loser of any race holds a dead token and is logged out.
+
+**How I tested it:** in the same quick run, refresh once with the login's refresh token, then
+refresh again with that *same* original token.
+
+**Result:** REFUTED.
+
+**What I found:** the first refresh returns a new access token and a new refresh token, but the
+original refresh token still works on reuse (200). The old access token also keeps working after a
+refresh. No rotation is enforced.
+
+**Consequence:** no finding, since the documentation never mentions refresh at all. Frontend:
+concurrent refreshes are harmless, so no cross-tab locking is needed. The client still stores
+whichever tokens the latest refresh returned, so it keeps working if rotation is ever switched on.
+
+### H-033 — Login reveals which email addresses have accounts
+
+**Why I suspected it:** many login endpoints answer "no such user" and "wrong password"
+differently, which lets anyone enumerate accounts. It also decides what the login screen may show.
+
+**How I tested it:** in the same quick run, one login with a real demo email and a wrong password,
+one with an address that has no account.
+
+**Result:** REFUTED.
+
+**What I found:** both return 401 with the identical body `{"detail": "invalid email or password"}`.
+Response timing was not tested: with two samples per case and single calls ranging from about 0.5
+to 17 seconds under that evening's load, a timing comparison would mean nothing.
+
+**Consequence:** no finding. The login screen likewise shows one message for both cases, "The email
+or password is incorrect.", so the app doesn't leak what the server keeps private.
