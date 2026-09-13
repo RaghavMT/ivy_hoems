@@ -1,0 +1,21 @@
+{
+ "run_at": "2026-09-13T14:39:03.516831+00:00",
+ "request": {
+  "path": "/v1/listings",
+  "params": {
+   "min_price": 5000000,
+   "limit": 1
+  }
+ },
+ "status": 200,
+ "reported_total": 3933,
+ "listings_on_bound": [
+  "SQU-2003690",
+  "SQU-2001367"
+ ],
+ "dump_count_inclusive": 4097,
+ "dump_count_exclusive": 4095,
+ "predicted_total_if_inclusive": 3933,
+ "predicted_total_if_exclusive": 3931,
+ "verdict": "INCLUSIVE"
+}

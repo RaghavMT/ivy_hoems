@@ -100,6 +100,8 @@ _Append decisions here as they're made so future sessions don't relitigate them.
   in `web/src/lib/normalise.ts` and nowhere else):
   - Listings `carpet_area` and `super_built_up_area`: square metres for website `magichomes` posted at
     or after 2026-06-01 00:00 IST (`2026-05-31T18:30:00Z`). Multiply by 10.7639. All others are sq ft.
-  - Projects `price_min`: lakhs, so ×100,000. `price_max`: crores when the raw value is below 10
-    (×10,000,000), lakhs when 60 or above (×100,000). Nothing is served between 4.15 and 60.
+    That is 358 records including 14 plots, matching `evidence.json`; the finding text says 344.
+  - Projects `price_min` AND `price_max`: crores when the raw value is below 10 (×10,000,000), lakhs
+    otherwise (×100,000). `price_min` raw is 1.00–1.43 or 31.4–99.9; `price_max` raw is 1.00–4.15 or
+    60–99.8. The `units` finding says price_min is lakhs only; H-035 shows 90 are crores.
   - Listing `price` is rupees and rental `price` is monthly rupees (H-001, H-003 refuted). No conversion.
