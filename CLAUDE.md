@@ -77,5 +77,10 @@ _Append decisions here as they're made so future sessions don't relitigate them.
 - Stack: _TBD_
 - Deploy target: _TBD_
 - Auth/session approach: _TBD_
-- Which filter params the API actually honours: _TBD — see analysis output_
+- Which filter params the API actually honours: **all documented ones** (locality, bhk,
+  property_type, min_price, max_price, furnishing on listings; locality, bhk, furnishing on rentals;
+  locality, project_status on projects) — verified 2026-09-13, `data/_probe/filters.json`. Keep
+  client-side filtering as the fallback anyway. `project_id` on listings is silently ignored.
+  `sort_by` works but `order=desc` is ignored (always ascending) and `sort_by=posted_at` sorts by IST
+  day only — sort client-side for descending and for recency. See H-016/H-017 in `docs/hypotheses.md`.
 - Which fields need unit conversion for display: _TBD — see analysis output_
