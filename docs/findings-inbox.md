@@ -73,6 +73,42 @@ lists `posted_at` as a `sort_by` value without stating granularity, so whether t
 claim being wrong is arguable. Only add it if you judge "sorts by posted_at" to mean by timestamp.
 Otherwise leave it out; precision counts as much as recall.
 
+### 4b. Rental `deposit` is served as months of rent by one website
+
+Status: OPEN. Found while building the rentals page. Hypothesis: H-036. Artifact: the dump; the frontend test
+`web/src/test/normalise.test.ts` checks every rental.
+
+```json
+{
+  "endpoint": "/v1/rentals",
+  "category": "units",
+  "documented": "'deposit is the security deposit in rupees'",
+  "actual": "for every rental from website zerobroker (344 records) deposit is a number of months of rent, a whole number from 2 to 10, not rupees. R2000514 serves rent 7800 with deposit 6, meaning Rs 46,800. Every other website's deposit is rupees (Rs 21,600 and up) and is an exact whole multiple of 2 to 10 times the monthly rent for all 1,306 of them. Nothing is served between 10 and 21,600.",
+  "how_found": "a deposit of 6 on a Rs 7,800 rent while building the rentals page. Profiled deposit over all 1,650 rentals: a separate cluster of 344 values from 2 to 10, all zerobroker and every zerobroker rental, with no date boundary. On the other websites deposit divided by rent is an exact integer 2-10 on every record, so 'months of rent' is the unit the low cluster is written in. The value spread in the low cluster (29-45 per value) matches the ratio spread elsewhere (129-167 per value).",
+  "impact": "a client showing deposit as documented tells renters a zerobroker flat needs a Rs 2 to Rs 10 security deposit, and any deposit statistic across websites is wrong by four orders of magnitude on a fifth of the records.",
+  "evidence": [
+    "R2000002",
+    "R2000003",
+    "R2000009",
+    "R2000018",
+    "R2000022",
+    "R2000034",
+    "R2000045",
+    "R2000066",
+    "R2000081",
+    "R2001491",
+    "R2001507",
+    "R2001536",
+    "R2001579",
+    "R2001617",
+    "R2001629",
+    "R2001635",
+    "R2001637",
+    "R2001639"
+  ]
+}
+```
+
 ---
 
 ## Corrections to existing findings

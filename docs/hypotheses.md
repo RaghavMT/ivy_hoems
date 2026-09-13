@@ -732,3 +732,43 @@ after 2026-06-01 00:00 IST selects exactly the 358 IDs in `analysis/out/evidence
 (`sqm_listing_ids`). That is 344 listings with bedrooms plus 14 plots, whose areas switched unit too
 (e.g. `MAG-2000528`, plot, 212 sq m). The `units` finding on `/v1/listings` says 344. The frontend
 converts all 358.
+
+### H-036 — Some rental deposits are served as a number of months, not rupees
+
+**Why I suspected it:** while choosing spot-check records for the rentals page, `R2000514` showed
+`deposit: 6` against a monthly rent of ₹7,800. The documentation says "`deposit` is the security
+deposit in rupees". A ₹6 deposit is not a real deposit, but "6 months" is exactly how Indian leases
+state one. H-003 found the median deposit is five times the rent, so a deposit written as a month
+count would be small integers in the same range.
+
+**How I tested it:** entry written before running anything beyond seeing that one record. Over all
+1,650 rentals in the dump, no API calls: (1) the distribution of `deposit`, looking for a separate
+low cluster; (2) for any low cluster, whether the values are small whole numbers in the range leases
+use; (3) whether `deposit / price` for the rest sits in that same range, which would make "months"
+the consistent reading; (4) whether anything else about the low group (website, date, locality)
+explains it, the way a website and a date explained the square-metre areas.
+
+**Result:** CONFIRMED.
+
+**What I found:** the deposits split into two groups with nothing between them.
+
+| | Rentals | `deposit` as served | `deposit / price` |
+| --- | --- | --- | --- |
+| website `zerobroker` | 344, every zerobroker rental | whole numbers 2–10 | — |
+| every other website | 1,306 | ₹21,600 and up | an exact whole number 2–10 for all 1,306 |
+
+The largest low value is 10 and the smallest rupee deposit is 21,600. The low values are spread
+evenly over 2–10, matching the spread of the month ratios on the other websites (129–167 records per
+value). No date boundary: zerobroker's month-count records run across its whole posting range, so
+unlike the square-metre areas this is a per-website convention, not a cutover. Example: `R2000514`
+serves a ₹7,800 rent with deposit 6, which is ₹46,800.
+
+Side effect on an earlier entry: H-003 reported the median `deposit / price` as exactly 5.0 over all
+rentals. That median included these 344 month counts. Over the 1,306 rupee deposits the median is
+6.0. H-003's conclusion, that rent is monthly, still stands: every rupee deposit is 2–10 times the
+rent, which is only plausible for monthly rent.
+
+**Consequence:** new `units` finding on `/v1/rentals` (added to `docs/findings-inbox.md`). No answer
+changes: Q5 sums `price`, not `deposit`. Frontend: `normaliseRental` converts a zerobroker deposit
+to rupees by multiplying by the monthly rent, with a whole-dump test that every converted deposit
+is 2–10 months of rent.

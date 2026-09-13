@@ -105,3 +105,5 @@ _Append decisions here as they're made so future sessions don't relitigate them.
     otherwise (×100,000). `price_min` raw is 1.00–1.43 or 31.4–99.9; `price_max` raw is 1.00–4.15 or
     60–99.8. The `units` finding says price_min is lakhs only; H-035 shows 90 are crores.
   - Listing `price` is rupees and rental `price` is monthly rupees (H-001, H-003 refuted). No conversion.
+  - Rental `deposit`: website `zerobroker` (all 344 of its rentals) serves a month count 2–10, not rupees;
+    multiply by `price`. Every other website is rupees, exactly 2–10 months of rent (H-036).
