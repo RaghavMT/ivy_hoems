@@ -132,6 +132,54 @@ describe('normaliseProject', () => {
   });
 });
 
+describe('normaliseRental: zerobroker deposits in months (H-036)', () => {
+  it('converts a zerobroker deposit from months to rupees', () => {
+    const result = normaliseRental({
+      listing_id: 'R2000514',
+      website: 'zerobroker',
+      price: 7_800,
+      deposit: 6,
+      maintenance: 2_500,
+      carpet_area: 350,
+      super_builtup_area: 501,
+    } as RawRental);
+    expect(result.depositInr).toBe(46_800);
+    expect(result.depositMonths).toBe(6);
+    expect(result.depositWasMonths).toBe(true);
+  });
+
+  it('leaves rupee deposits from other websites alone', () => {
+    const result = normaliseRental({
+      listing_id: 'R2000001',
+      website: 'dwelling',
+      price: 45_500,
+      deposit: 136_500,
+      maintenance: 2_500,
+      carpet_area: 1115,
+      super_builtup_area: 1610,
+    } as RawRental);
+    expect(result.depositInr).toBe(136_500);
+    expect(result.depositMonths).toBe(3);
+    expect(result.depositWasMonths).toBe(false);
+  });
+
+  const rentals = readRecords<RawRental>('data/v1_rentals.json');
+
+  it('converts exactly the rentals served with a month count, across the whole dump', () => {
+    const converted = rentals.map(normaliseRental).filter((r) => r.depositWasMonths).map((r) => r.listing_id).sort();
+    const smallDeposits = rentals.filter((r) => r.deposit < 1000).map((r) => r.listing_id).sort();
+    expect(converted).toHaveLength(344);
+    expect(converted).toEqual(smallDeposits);
+  });
+
+  it('puts every deposit at a whole number of months between 2 and 10', () => {
+    const odd = rentals
+      .map(normaliseRental)
+      .filter((r) => !Number.isInteger(r.depositMonths) || r.depositMonths < 2 || r.depositMonths > 10);
+    expect(odd.map((r) => r.listing_id)).toEqual([]);
+  });
+});
+
 describe('normaliseRental', () => {
   it('passes monthly rupees and square feet through, under consistent names', () => {
     const result = normaliseRental({

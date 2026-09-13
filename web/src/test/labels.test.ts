@@ -26,6 +26,13 @@ describe('listingTitle', () => {
     );
   });
 
+  it('titles a rental from its structured fields, not the seller title', () => {
+    // R2000001: the seller's title says "3 BHK for rent in Madhapur"; its locality field is Banjara Hills (H-022).
+    const title = listingTitle({ bedroom: 3, property_type: 'apartment', apartment_name: 'Lodha Habitat' });
+    expect(title).toBe('3 BHK apartment, Lodha Habitat');
+    expect(title).not.toContain('Madhapur');
+  });
+
   it('leaves out an empty building name', () => {
     expect(listingTitle({ bedroom: 3, property_type: 'villa', apartment_name: '' })).toBe('3 BHK villa');
     expect(listingTitle({ bedroom: 3, property_type: 'villa', apartment_name: null })).toBe('3 BHK villa');

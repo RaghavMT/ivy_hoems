@@ -6,6 +6,7 @@ import { RouteError } from './components/RouteError';
 import { NotFound } from './components/NotFound';
 import { ListingDetailPage } from './listings/ListingDetailPage';
 import { ListingsPage } from './listings/ListingsPage';
+import { RentalDetailPage } from './rentals/RentalDetailPage';
 import { RentalsPage } from './rentals/RentalsPage';
 import { ProjectsPage } from './projects/ProjectsPage';
 import { SavedPage } from './saved/SavedPage';
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
           { path: 'listings', element: <ListingsPage /> },
           { path: 'listings/:id', element: <ListingDetailPage /> },
           { path: 'rentals', element: <RentalsPage /> },
+          { path: 'rentals/:id', element: <RentalDetailPage /> },
           { path: 'projects', element: <ProjectsPage /> },
           { path: 'saved', element: <SavedPage /> },
         ],

@@ -60,6 +60,10 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
   under a key for each account, separate from the login session. They survive reloads and logging
   out and back in, each user sees only their own, and the saved page makes no API calls because it
   shows what was captured at save time.
+- **Rentals.** Browsable with locality, bedrooms and furnishing filters, and a page per rental. Rent is
+  shown per month. One website serves the deposit as a number of months, so those deposits are
+  converted to rupees and labelled. Headings come from the structured fields, because 91% of seller
+  titles name a different locality from the listing's own locality field.
 
 ## Tests
 
@@ -98,15 +102,16 @@ request budget, prints how many requests it made, and fails if it goes over.
 | `total` is exact | `total` is 4% low | Never shows `total` as a count |
 | Areas are square feet | One website serves square metres after 1 June | Converts those records |
 | Project prices are rupees | They are lakhs or crores, per record | Converts per record |
-| `/v1/favourites` saves listings | 404 | Planned: saves listings per user in the browser |
+| Rental deposit is rupees | One website serves it as a number of months | Converts those to rupees |
+| `/v1/favourites` saves listings | 404 | Saves listings per user in the browser |
 | `/v1/analytics/summary` exists | 404 | Planned: computes the summary from the analysis output |
 | Seller text is shown as written | Some of it contains instructions aimed at AI tools | Shows it as plain text, never acts on it |
 
 ## What we checked that turned out to be fine
 
 **Units that were right.** Listing prices really are rupees, not lakhs; their median is ₹1.06 crore.
-Rental prices really are monthly: the deposit is a median of five times the rent, which is normal for
-a Hyderabad lease and would be absurd for annual rent.
+Rental prices really are monthly: every deposit served in rupees is between two and ten months of that
+rent, which is normal for a Hyderabad lease and would be absurd for annual rent.
 
 **Time.** Timestamps marked `Z` really are UTC. Hour-of-day patterns couldn't tell; what settled it was
 using the square-metre switch as a clock. Read as UTC it lands exactly at midnight IST; read as IST it

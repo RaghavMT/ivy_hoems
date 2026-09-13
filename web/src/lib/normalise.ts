@@ -21,6 +21,13 @@ const SQM_FROM = Date.parse('2026-05-31T18:30:00Z');
  */
 const PROJECT_CRORE_BELOW = 10;
 
+/**
+ * units finding on /v1/rentals, H-036: website `zerobroker` serves `deposit` as a
+ * number of months' rent (2-10) instead of rupees. All 344 of its rentals; no date
+ * boundary. Every other website's deposit is rupees and an exact 2-10 months of rent.
+ */
+const DEPOSIT_IN_MONTHS_WEBSITE = 'zerobroker';
+
 // --- Raw shapes, as served (verified against data/v1_*.json) -----------------
 
 export type RawListing = {
@@ -127,6 +134,10 @@ export type Listing = Omit<RawListing, 'carpet_area' | 'super_built_up_area'> & 
 export type Rental = Omit<RawRental, 'price' | 'deposit' | 'maintenance' | 'carpet_area' | 'super_builtup_area'> & {
   rentInrPerMonth: number;
   depositInr: number;
+  /** Deposit expressed as months of rent, whichever unit it was served in. */
+  depositMonths: number;
+  /** True when the served deposit was a month count and has been converted to rupees. */
+  depositWasMonths: boolean;
   maintenanceInrPerMonth: number;
   carpetAreaSqft: number;
   superBuiltUpAreaSqft: number;
@@ -157,10 +168,14 @@ export function normaliseListing(raw: RawListing): Listing {
 
 export function normaliseRental(raw: RawRental): Rental {
   const { price, deposit, maintenance, carpet_area, super_builtup_area, ...rest } = raw;
+  const inMonths = raw.website === DEPOSIT_IN_MONTHS_WEBSITE;
+  const depositInr = inMonths ? deposit * price : deposit;
   return {
     ...rest,
     rentInrPerMonth: price,
-    depositInr: deposit,
+    depositInr,
+    depositMonths: price > 0 ? depositInr / price : 0,
+    depositWasMonths: inMonths,
     maintenanceInrPerMonth: maintenance,
     carpetAreaSqft: carpet_area,
     superBuiltUpAreaSqft: super_builtup_area,
