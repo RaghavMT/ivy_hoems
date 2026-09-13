@@ -456,29 +456,112 @@ img {
   }
 }
 
+.btn-block {
+  width: 100%;
+}
+
+.form-error {
+  padding: var(--space-3) var(--space-4);
+  border-left: 4px solid var(--alert);
+  border-radius: var(--radius-sm);
+  background: var(--alert-wash);
+  color: var(--alert);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.form-status {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+/* Stays in the DOM so screen readers announce it when it fills, but takes no
+   space while empty. */
+.form-status:empty {
+  margin-top: calc(-1 * var(--space-4));
+}
+
 /* Login screen ----------------------------------------------------------- */
 .auth-screen {
   min-height: 100dvh;
   display: grid;
-  place-items: center;
-  padding: var(--space-6) var(--gutter);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+  align-items: center;
+  gap: var(--space-8);
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-7) var(--gutter);
+}
+
+/* The one full-bleed brand moment in the app. */
+body:has(.auth-screen) {
   background: var(--ivy);
+}
+
+.auth-intro {
+  color: var(--paper);
+}
+
+.wordmark-inverse {
+  display: inline-flex;
+  color: var(--paper);
+  font-size: var(--text-xl);
+}
+
+.auth-pitch {
+  max-width: 30ch;
+  margin-top: var(--space-5);
+  font-size: var(--text-2xl);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .auth-card {
   width: 100%;
-  max-width: 26rem;
   padding: var(--space-6);
   background: var(--paper);
   border-radius: var(--radius-md);
 }
 
 .auth-title {
-  margin-top: var(--space-5);
   font-size: var(--text-xl);
 }
 
 .auth-lede {
   margin-top: var(--space-2);
   color: var(--muted);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 880px) {
+  .auth-screen {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--space-5);
+    max-width: 28rem;
+    padding-block: var(--space-6);
+  }
+
+  .auth-pitch {
+    margin-top: var(--space-3);
+    font-size: var(--text-lg);
+    line-height: 1.35;
+  }
+
+  .auth-card {
+    padding: var(--space-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .account-email {
+    display: none;
+  }
 }

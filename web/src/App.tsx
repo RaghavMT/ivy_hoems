@@ -1,4 +1,6 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useSession, useSessionKeepAlive } from './auth/useSession';
+import { api } from './lib/api';
 
 const NAV = [
   { to: '/listings', label: 'Buy' },
@@ -9,6 +11,15 @@ const NAV = [
 ];
 
 export function App() {
+  const session = useSession();
+  useSessionKeepAlive();
+
+  // Clearing the session is enough: protected pages redirect to login through
+  // RequireAuth, and public pages stay put. A second navigate() here would race it.
+  function logOut() {
+    void api().logout();
+  }
+
   return (
     <div className="shell">
       <header className="topbar">
@@ -24,9 +35,20 @@ export function App() {
             ))}
           </nav>
           <div className="account">
-            <Link to="/login" className="btn btn-secondary btn-sm">
-              Log in
-            </Link>
+            {session ? (
+              <>
+                <span className="account-email" title="Logged in">
+                  {session.email}
+                </span>
+                <button type="button" className="btn btn-secondary btn-sm" onClick={logOut}>
+                  Log out
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="btn btn-primary btn-sm">
+                Log in
+              </Link>
+            )}
           </div>
         </div>
       </header>
