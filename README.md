@@ -102,6 +102,10 @@ request budget, prints how many requests it made, and fails if it goes over.
    record-level findings name the specific IDs that show the defect.
 5. **Examine what the first rule gets wrong.** Duplicates, fake listings, impossible records and unit
    errors each went through several rules; the exceptions to each rule decided the next one.
+6. **Findings surfaced while building, not just while analysing.** Four of the 24 — logout not
+   invalidating tokens, `order=desc` being ignored, `project_id` being ignored, rental deposits
+   served in months — turned up while wiring up the app itself, then were reproduced and folded
+   into `submission.json`.
 
 ## What we found, and what the app does about it
 
