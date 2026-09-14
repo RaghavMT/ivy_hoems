@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const ORDER = ['login', 'listings', 'detail', 'saved', 'rentals', 'projects'];
+const ORDER = ['login', 'listings', 'detail', 'saved', 'rentals', 'projects', 'insights'];
 
 const available = readdirSync(HERE)
   .filter((f) => f.endsWith('.mjs') && !['lib.mjs', 'run.mjs'].includes(f))
