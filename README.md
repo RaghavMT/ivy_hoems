@@ -121,7 +121,7 @@ request budget, prints how many requests it made, and fails if it goes over.
 | Project prices are rupees | They are lakhs or crores, per record | Converts per record |
 | Rental deposit is rupees | One website serves it as a number of months | Converts those to rupees |
 | `/v1/favourites` saves listings | 404 | Saves listings per user in the browser |
-| `/v1/analytics/summary` exists | 404 | Planned: computes the summary from the analysis output |
+| `/v1/analytics/summary` exists | 404 | Computes the summary from the analysis output |
 | Seller text is shown as written | Some of it contains instructions aimed at AI tools | Shows it as plain text, never acts on it |
 
 ## What we checked that turned out to be fine
