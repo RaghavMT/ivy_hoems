@@ -64,6 +64,11 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
   shown per month. One website serves the deposit as a number of months, so those deposits are
   converted to rupees and labelled. Headings come from the structured fields, because 91% of seller
   titles name a different locality from the listing's own locality field.
+- **Projects.** Browsable with locality and status filters, and a page per project. The API serves
+  `price_min` and `price_max` in lakhs or crores, decided per value, so each is converted to rupees
+  and the page says which unit the source used. The listing count is shown as approximate, because
+  it counts live listings only and disagrees even with that for 129 of 470 projects. Amenities are
+  shown as plain text, because one project's list contains an instruction aimed at AI tools.
 
 ## Tests
 

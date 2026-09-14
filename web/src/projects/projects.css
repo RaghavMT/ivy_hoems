@@ -1,0 +1,47 @@
+/* Projects pages. Browse and detail layouts come from components/browse.css and
+   listings/detail.css; tokens from styles.css. */
+
+.filter-bar .filter-fields-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+}
+
+@media (max-width: 480px) {
+  .filter-bar .filter-fields-two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A range is longer than a single price, so it steps down a size. */
+.listing-price.project-price {
+  font-size: var(--text-lg);
+}
+
+.detail-price-main.project-price {
+  font-size: var(--text-2xl);
+}
+
+.project-price .nowrap {
+  white-space: nowrap;
+}
+
+.project-count {
+  font-weight: 700;
+}
+
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.amenities li {
+  max-width: 100%;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  overflow-wrap: anywhere;
+}

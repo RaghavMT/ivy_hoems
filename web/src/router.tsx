@@ -8,6 +8,7 @@ import { ListingDetailPage } from './listings/ListingDetailPage';
 import { ListingsPage } from './listings/ListingsPage';
 import { RentalDetailPage } from './rentals/RentalDetailPage';
 import { RentalsPage } from './rentals/RentalsPage';
+import { ProjectDetailPage } from './projects/ProjectDetailPage';
 import { ProjectsPage } from './projects/ProjectsPage';
 import { SavedPage } from './saved/SavedPage';
 import { InsightsPage } from './insights/InsightsPage';
@@ -31,6 +32,7 @@ export const router = createBrowserRouter([
           { path: 'rentals', element: <RentalsPage /> },
           { path: 'rentals/:id', element: <RentalDetailPage /> },
           { path: 'projects', element: <ProjectsPage /> },
+          { path: 'projects/:id', element: <ProjectDetailPage /> },
           { path: 'saved', element: <SavedPage /> },
         ],
       },
