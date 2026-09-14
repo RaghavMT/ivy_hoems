@@ -5,7 +5,7 @@ assignment statement, not from the data. They are candidates for testing, not fi
 
 **Raghav approves which ones get tested.** Nothing here goes into `findings` without being
 personally reproduced with evidence IDs. Every one that is tested — confirmed or refuted — gets an
-entry in `docs/hypotheses.md`.
+entry in `docs/hypothesis-log.md`.
 
 Note: the assignment says a key determines which parts of the documentation are wrong *for you*.
 Expect a meaningful fraction of these to be refuted. That is a good outcome — refutations are

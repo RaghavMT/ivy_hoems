@@ -126,7 +126,7 @@ that distinguishes this app from every other candidate's.
 README covers: how to run it; how you decided what to distrust; **what you checked that turned out
 fine**; what you'd do with two more days. Disclose LLM use plainly.
 
-The what-turned-out-fine section comes straight from `docs/hypotheses.md` if you've kept it as you
+The what-turned-out-fine section comes straight from `docs/hypothesis-log.md` if you've kept it as you
 went. Do not reconstruct it Sunday night — it reads as reconstructed.
 
 Precision pass on findings: delete every entry you cannot point to specific IDs for. A short
@@ -160,7 +160,7 @@ Those are the three things nobody else will have.
 
 - Commit after every working increment. They read the history and a single deadline commit tells
   them nothing.
-- Every hypothesis goes in `docs/hypotheses.md` **before** it is tested, with the result after.
+- Every hypothesis goes in `docs/hypothesis-log.md` **before** it is tested, with the result after.
   Refutations are required README content and cannot be reconstructed convincingly.
 - Never report a discrepancy not personally reproduced with evidence IDs.
 - The API key stays in `.env`, gitignored. It appears in `submission.json` because the format

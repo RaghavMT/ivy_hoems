@@ -285,7 +285,7 @@ export function Discoveries() {
         unit={`of ${formatCount(f(titles, 'rentals'))} rental titles`}
         title="Rental titles that name another locality"
         note={`${percent(titles.count, f(titles, 'rentals'))} of rental titles mention a different locality from the rental's own locality field. Headings in the app are built from the structured fields, and the seller's title is shown as seller text.`}
-        source="Hypothesis H-022 in docs/hypotheses.md"
+        source="Hypothesis H-022 in docs/hypothesis-log.md"
       >
         <Examples>
           {titles.examples?.map((example) => (

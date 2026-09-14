@@ -95,7 +95,7 @@ _Append decisions here as they're made so future sessions don't relitigate them.
   locality, project_status on projects) — verified 2026-09-13, `data/_probe/filters.json`. Keep
   client-side filtering as the fallback anyway. `project_id` on listings is silently ignored.
   `sort_by` works but `order=desc` is ignored (always ascending) and `sort_by=posted_at` sorts by IST
-  day only — sort client-side for descending and for recency. See H-016/H-017 in `docs/hypotheses.md`.
+  day only — sort client-side for descending and for recency. See H-016/H-017 in `docs/hypothesis-log.md`.
 - Which fields need unit conversion for display (from the two `units` findings; all conversion lives
   in `web/src/lib/normalise.ts` and nowhere else):
   - Listings `carpet_area` and `super_built_up_area`: square metres for website `magichomes` posted at

@@ -13,7 +13,7 @@ Live app: https://ivy-hoems.vercel.app
 | `dump.py` | Pulls the full dataset once, with auth and pagination detection |
 | `analysis/` | Scripts that compute the ten answers and probe specific API behaviour |
 | `data/` | The dataset snapshot and every probe's saved request results |
-| `docs/hypotheses.md` | Every hypothesis tested, including the ones that were wrong |
+| `docs/hypothesis-log.md` | Every hypothesis tested, including the ones that were wrong |
 | `submission.json` | The ten answers and the documentation findings |
 
 ## How to run it
@@ -96,7 +96,7 @@ request budget, prints how many requests it made, and fails if it goes over.
    most checks run against that snapshot.
 2. **Probe before building.** Auth, pagination, filters, sorting and every documented endpoint were
    called and compared with the documentation before any app code was written.
-3. **Write the hypothesis first.** Each suspicion went into `docs/hypotheses.md` before its test, and
+3. **Write the hypothesis first.** Each suspicion went into `docs/hypothesis-log.md` before its test, and
    the result was recorded whichever way it went.
 4. **Reproduce, then report.** A finding needs a saved request and response under `data/_probe/`, and
    record-level findings name the specific IDs that show the defect.
@@ -147,7 +147,7 @@ identify buildings, not flats. Rental titles contradict their locality field 91%
 uniform noise with nothing to arbitrate it. `total_floors` of zero looked corrupt but is correct for
 plots. Several plausible corruption rules, like zero areas or negative floors, matched no records.
 
-Full detail for each: `docs/hypotheses.md`.
+Full detail for each: `docs/hypothesis-log.md`.
 
 ## Use of AI tools
 
