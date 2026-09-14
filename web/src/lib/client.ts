@@ -6,12 +6,18 @@ import { needsRefresh, sessionFromTokens, type Session, type TokenResponse } fro
 
 export class ApiError extends Error {
   readonly status: number;
+  /** The server's own error text. Untrusted: for debugging, never shown to users. */
+  readonly detail: string | undefined;
 
-  /** `status` is the HTTP status, or 0 when the server could not be reached. */
-  constructor(status: number, message: string) {
+  /**
+   * `status` is the HTTP status, or 0 when the server could not be reached.
+   * `message` is always written by the app, so it is safe to show.
+   */
+  constructor(status: number, message: string, detail?: string) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
+    this.detail = detail;
   }
 }
 
@@ -33,6 +39,21 @@ export const UNREACHABLE_MESSAGE =
   "Can't reach the property server. Check your connection and try again.";
 
 type SendOptions = { params?: QueryParams; body?: unknown; token?: string };
+
+/**
+ * What a user reads when a request fails. Written here rather than taken from the
+ * response: API text is untrusted, like seller text, and can carry instructions
+ * aimed at whoever reads it.
+ */
+export function messageForStatus(status: number): string {
+  if (status === 400 || status === 422) return 'The server could not use that request.';
+  if (status === 401) return SESSION_ENDED_MESSAGE;
+  if (status === 403) return "This account doesn't have access to that.";
+  if (status === 404) return "That record doesn't exist.";
+  if (status === 429) return 'Too many requests at once. Wait a moment and try again.';
+  if (status >= 500) return 'The property server had a problem. Try again in a moment.';
+  return `The request failed (status ${status}). Try again.`;
+}
 
 export function createApiClient(deps: ApiClientDeps) {
   const { baseUrl, apiKey, now, getSession, setSession } = deps;
@@ -62,16 +83,16 @@ export function createApiClient(deps: ApiClientDeps) {
   }
 
   async function errorFrom(response: Response): Promise<ApiError> {
-    let message = response.statusText || `Request failed with status ${response.status}`;
+    let detail: string | undefined;
     try {
       const body: unknown = await response.json();
       if (body && typeof body === 'object' && typeof (body as { detail?: unknown }).detail === 'string') {
-        message = (body as { detail: string }).detail;
+        detail = (body as { detail: string }).detail;
       }
     } catch {
-      // Not JSON; keep the status text.
+      // Not JSON; nothing to keep.
     }
-    return new ApiError(response.status, message);
+    return new ApiError(response.status, messageForStatus(response.status), detail);
   }
 
   async function login(email: string, password: string): Promise<Session> {

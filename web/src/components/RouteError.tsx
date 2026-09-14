@@ -3,11 +3,13 @@ import { StatePanel } from './StatePanel';
 
 export function RouteError() {
   const error = useRouteError();
+  // An error's own text can quote a response body (a JSON parse error does), and API
+  // text is untrusted, so the page shows only a status or a fixed line. Details go to
+  // the console for debugging.
+  console.error(error);
   const message = isRouteErrorResponse(error)
-    ? `${error.status} ${error.statusText}`
-    : error instanceof Error
-      ? error.message
-      : 'Unknown error';
+    ? `Error ${error.status}. Try again, or go back to the listings.`
+    : 'Try reloading the page. If it keeps happening, go back to the listings.';
 
   return (
     <main className="main">

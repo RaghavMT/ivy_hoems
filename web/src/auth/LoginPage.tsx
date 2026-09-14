@@ -7,13 +7,15 @@ import { useSession } from './useSession';
 
 const SLOW_AFTER_MS = 4000;
 
+// Only app-written text is shown: ApiError messages are fixed per status, and any
+// other error gets a generic line rather than whatever it carries.
 function messageFor(error: unknown): string {
   if (error instanceof ApiError) {
     if (error.status === 401) return 'The email or password is incorrect.';
     if (error.status === 0) return UNREACHABLE_MESSAGE;
     return error.message;
   }
-  return error instanceof Error ? error.message : 'Something went wrong. Try again.';
+  return 'Something went wrong. Try again.';
 }
 
 export function LoginPage() {
