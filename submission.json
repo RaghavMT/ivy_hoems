@@ -2,9 +2,9 @@
   "api_key": "IVY26-F1A1CCCD83E0",
   "candidate": {
     "name": "Raghav Tibra",
-    "email": "TODO@mnnit.ac.in",
+    "email": "raghavtibra18@gmail.com",
     "repo_url": "https://github.com/RaghavMT/ivy_hoems",
-    "demo_url": "TODO-deployed-url"
+    "demo_url": "https://ivy-hoems.vercel.app"
   },
   "answers": {
     "total_listing_records": 4400,

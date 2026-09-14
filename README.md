@@ -154,4 +154,17 @@ and approved every commit.
 
 ## With another two days
 
-To be written at the end of the build.
+- **Put the analysis into browsing.** The app shows every record the API returns, with badges for
+  converted units and listings that are not live. Next it would group repeat listings of one home
+  into a single card with each website's price, and warn on the 135 bait listings and 60 impossible
+  records instead of leaving that to the Insights page.
+- **Saved homes across devices.** `/v1/favourites` does not exist, so saves live in the browser. A
+  small server-side store keyed by user would let them follow the user to another device.
+- **Sorting.** The API ignores `order=desc` and sorts `posted_at` by day only, so a newest-first or
+  price-high-to-low view has to sort in the browser over loaded pages. It was left out to keep the
+  six required features exact.
+- **Run the browser tests on every pull request** against the Vercel preview, including a real
+  31-minute session check, instead of by hand before each merge.
+- **Keep the Insights page current.** It is built from a copy of the data taken on 12 September. A
+  scheduled re-pull and rebuild would catch the data changing, and the build's checks would flag any
+  count that no longer matches.
