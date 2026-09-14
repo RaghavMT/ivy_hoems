@@ -22,13 +22,16 @@ Live app: https://ivy-hoems.vercel.app
 
 ```bash
 cd web
-cp .env.example .env.local   # set VITE_API_BASE_URL and VITE_API_KEY
+cp .env.example .env.local   # set API_BASE_URL and API_KEY (server-side only, no VITE_ prefix)
 npm install
 npm run dev                  # http://localhost:5173
 npm test                     # rule tests, no network
 ```
 
 Log in with one of the demo accounts from the assignment email.
+
+On Vercel (project root `web/`), set `API_BASE_URL` and `API_KEY` in the project's environment
+variables. They are read only by the server function in `web/api/proxy.ts`.
 
 **Analysis** (Python 3 with `requests` and `python-dotenv`):
 
@@ -40,6 +43,12 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
 
 ## How the app works
 
+- **The API key stays on the server.** The browser calls `/api/...` on the app's own address. A
+  small Vercel function, `web/api/proxy.ts`, adds the `X-API-Key` header and forwards to the property
+  API; locally the Vite dev and preview servers do the same. The key is never in the JavaScript
+  sent to the browser. The proxy forwards only the login, refresh, logout, listings, rentals and
+  projects paths the app uses, so it can't be used to reach anything else. The user's own bearer
+  token still comes from the browser, so every call is made as that user.
 - **Login.** Credentials go to `/auth/login`, which returns a 15-minute access token and a refresh
   token. Both are stored in the browser, so a reload keeps the session. The app refreshes a minute
   before expiry, and refreshes and retries once if a request is rejected.
@@ -87,7 +96,8 @@ npm run build && npx vite preview --port 4173
 npm run e2e                               # browser tests in Chrome against the real API
 ```
 
-The browser tests read `BASE_URL` and `DEMO_PASSWORD` from the root `.env`. Each one has an API
+The browser tests read `DEMO_PASSWORD` from the root `.env` and send API calls through the app's
+`/api` proxy, so they need `web/.env.local` set up as above. Each one has an API
 request budget, prints how many requests it made, and fails if it goes over.
 
 ## How we decided what to distrust

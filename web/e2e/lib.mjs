@@ -3,7 +3,8 @@
 // and fails if it goes over its budget.
 //
 // Env: E2E_BASE_URL (default http://localhost:4173), CHROME_PATH (optional).
-// Reads BASE_URL and DEMO_PASSWORD from the repository's root .env; never prints them.
+// API calls go to the app's own /api proxy, which adds the key server-side.
+// Reads DEMO_PASSWORD from the repository's root .env; never prints it.
 
 import { chromium } from 'playwright-core';
 import { mkdirSync, readFileSync } from 'node:fs';
@@ -28,7 +29,7 @@ function readRootEnv() {
 }
 
 const env = readRootEnv();
-export const API_URL = env.BASE_URL.replace(/\/+$/, '');
+export const API_URL = `${APP_URL}/api`;
 export const PASSWORD = env.DEMO_PASSWORD;
 
 export function readRecords(file) {
@@ -56,7 +57,7 @@ export async function startSpec(name, budget, { expectedErrors = () => false } =
   let apiRequests = 0;
 
   context.on('request', (request) => {
-    // CORS preflights carry no key; count only the real calls.
+    // Same-origin now, so no preflights; the check stays harmless.
     if (request.url().startsWith(API_URL) && request.method() !== 'OPTIONS') apiRequests++;
   });
 
