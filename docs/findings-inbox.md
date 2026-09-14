@@ -15,7 +15,7 @@ with a reason. Don't delete items; the history of what was decided matters.
 
 ### 1. `/auth/logout` does not invalidate anything
 
-Status: OPEN. Artifact: `data/_probe/session.json` (run twice, same result). Hypothesis: H-031.
+Status: MERGED (analysis session, verified against the dump). Artifact: `data/_probe/session.json` (run twice, same result). Hypothesis: H-031.
 
 ```json
 {
@@ -31,7 +31,7 @@ Status: OPEN. Artifact: `data/_probe/session.json` (run twice, same result). Hyp
 
 ### 2. `order=desc` is accepted and ignored
 
-Status: OPEN. Already reproduced by the analysis session and logged as a finding in H-017, but not
+Status: MERGED (analysis session, verified against the dump). Already reproduced by the analysis session and logged as a finding in H-017, but not
 present in `submission.json`. Artifacts: `data/_probe/filters.json` (`sorting`),
 `data/_probe/sorting_full.json`.
 
@@ -49,7 +49,7 @@ present in `submission.json`. Artifacts: `data/_probe/filters.json` (`sorting`),
 
 ### 3. `project_id` on `/v1/listings` is accepted and ignored
 
-Status: OPEN. Already reproduced by the analysis session and logged as a finding in H-016, but not
+Status: MERGED (analysis session, verified against the dump). Already reproduced by the analysis session and logged as a finding in H-016, but not
 present in `submission.json`. Artifact: `data/_probe/filters.json`.
 
 ```json
@@ -66,7 +66,7 @@ present in `submission.json`. Artifact: `data/_probe/filters.json`.
 
 ### 4. Candidate, lower confidence: `sort_by=posted_at` orders by IST calendar day only
 
-Status: OPEN, needs a decision. Artifact: `data/_probe/sorting_full.json`. H-017 item 4.
+Status: REJECTED. The docs list posted_at as a sort_by value without stating granularity, so ordering by IST day is still ordering by posted_at. Reporting it needs "sorts by posted_at" to mean "by timestamp" - our reading, not their claim. README material, not a finding.
 
 The returned page is ascending by IST date, with arbitrary order within each day. The documentation
 lists `posted_at` as a `sort_by` value without stating granularity, so whether this is a documented
@@ -75,7 +75,7 @@ Otherwise leave it out; precision counts as much as recall.
 
 ### 4b. Rental `deposit` is served as months of rent by one website
 
-Status: OPEN. Found while building the rentals page. Hypothesis: H-036. Artifact: the dump; the frontend test
+Status: MERGED (analysis session, verified against the dump). Found while building the rentals page. Hypothesis: H-036. Artifact: the dump; the frontend test
 `web/src/test/normalise.test.ts` checks every rental.
 
 ```json
@@ -115,7 +115,7 @@ Status: OPEN. Found while building the rentals page. Hypothesis: H-036. Artifact
 
 ### 5. `/v1/projects` `units`: `price_min` is also served in two units
 
-Status: OPEN. Hypothesis: H-035. Artifact: the dump, reproducible with the check in H-035.
+Status: MERGED (analysis session, verified against the dump). Hypothesis: H-035. Artifact: the dump, reproducible with the check in H-035.
 
 Current text says: "price_min is in lakhs."
 
@@ -135,7 +135,7 @@ Effect on answers: none. Q7 uses `price_max` only.
 
 ### 6. `/v1/listings` `units`: 358 records are affected, not 344
 
-Status: OPEN. Artifact: `analysis/out/evidence.json` (`sqm_listing_ids`, 358 IDs).
+Status: MERGED (analysis session, verified against the dump). Artifact: `analysis/out/evidence.json` (`sqm_listing_ids`, 358 IDs).
 
 Current text says: "344 records are affected."
 
@@ -152,7 +152,7 @@ the same 344 bedroomed listings, and no question uses plots.
 
 ### 7. `/v1/listings` `pagination`: `total` is rounded, not floored
 
-Status: OPEN. Hypothesis: H-034. Artifacts: `data/_probe/filters.json`, `data/_probe/price_bounds.json`.
+Status: MERGED (analysis session, verified against the dump). Hypothesis: H-034. Artifacts: `data/_probe/filters.json`, `data/_probe/price_bounds.json`.
 
 Current text says: "each is floor(n x 0.96)."
 
@@ -163,7 +163,7 @@ requests in the filter probe, rounding reproduces every reported total and floor
 
 ### 8. `/auth/login` `auth`: the `user` object has no `name`
 
-Status: OPEN. Artifact: `data/_probe/auth.json` (`login`, body with tokens redacted).
+Status: MERGED (analysis session, verified against the dump). Artifact: `data/_probe/auth.json` (`login`, body with tokens redacted).
 
 The documentation's response example shows `"user": { "email": "demo1@ivy.homes", "name": "Demo
 User" }`. The actual `user` is `{"email": "demo1@ivy.homes"}`.
@@ -178,7 +178,7 @@ only email, not the documented name."
 
 ### 9. The `/health` `timestamps` finding may be scored as a false positive
 
-Status: OPEN, needs a decision.
+Status: ACTED ON - finding REMOVED from submission.json. The statement's own example is a /health timestamps entry whose impact reads "none - this one is an example of the format, not a discrepancy", so they pre-declared the +05:30 as not a discrepancy. Restating it risks a scored false positive. timestamps is now an empty category, which is correct: the posted_at timezone hypothesis was refuted (the Z is honest).
 
 The statement's own format example (`docs/statement.md`, Part 3) is a `/health` `timestamps` entry
 whose `impact` reads "none - this one is an example of the format, not a discrepancy". The current
