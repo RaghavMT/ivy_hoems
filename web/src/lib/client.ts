@@ -1,6 +1,7 @@
-// Every request to the property API goes through here. It attaches both credentials
-// the server checks (H-029: key in X-API-Key, plus the user's bearer token), keeps
-// the 900-second token fresh, and turns failures into ApiError with a readable message.
+// Every request to the property API goes through here. It attaches the user's bearer
+// token, keeps the 900-second token fresh, and turns failures into ApiError with a
+// readable message. The API also needs a key (H-029: X-API-Key header); that is added
+// by the server-side proxy, never in the browser.
 
 import { needsRefresh, sessionFromTokens, type Session, type TokenResponse } from './session';
 
@@ -25,7 +26,6 @@ export type QueryParams = Record<string, string | number | undefined>;
 
 export type ApiClientDeps = {
   baseUrl: string;
-  apiKey: string;
   fetch: typeof fetch;
   now: () => number;
   getSession: () => Session | null;
@@ -56,7 +56,7 @@ export function messageForStatus(status: number): string {
 }
 
 export function createApiClient(deps: ApiClientDeps) {
-  const { baseUrl, apiKey, now, getSession, setSession } = deps;
+  const { baseUrl, now, getSession, setSession } = deps;
   // Held in a local so the browser's fetch is never called with the wrong `this`.
   const fetchImpl = deps.fetch;
   let refreshing: Promise<Session> | null = null;
@@ -67,7 +67,7 @@ export function createApiClient(deps: ApiClientDeps) {
       if (value !== undefined && value !== '') url.searchParams.set(name, String(value));
     }
 
-    const headers: Record<string, string> = { 'X-API-Key': apiKey, Accept: 'application/json' };
+    const headers: Record<string, string> = { Accept: 'application/json' };
     if (options.token) headers.Authorization = `Bearer ${options.token}`;
     if (options.body !== undefined) headers['Content-Type'] = 'application/json';
 

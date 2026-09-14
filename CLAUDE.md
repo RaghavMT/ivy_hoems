@@ -78,11 +78,16 @@ _Append decisions here as they're made so future sessions don't relitigate them.
   one stylesheet of brand tokens (Ivy blue `#0018A8`, charcoal `#303030`, Source Sans 3, all taken
   from ivy.homes). vitest for logic tests. Node 24 LTS. Plan: `docs/superpowers/plans/2026-09-13-frontend.md`.
 - Deploy target: Vercel, project root `web/`, preview deploy per pushed branch, production from
-  `main`. Env vars `VITE_API_BASE_URL` and `VITE_API_KEY` set in the Vercel project, `web/.env.example`
-  documents them.
+  `main`. Server-side env vars `API_BASE_URL` and `API_KEY` in the Vercel project (the proxy also
+  accepts the older `VITE_` names as a fallback), `web/.env.example` documents them.
+- API key never ships to the browser (decided 2026-09-14): browser calls `/api/<path>` on its own
+  origin, `web/api/proxy.ts` (Vercel function, path allowlist) or the Vite dev/preview proxy adds
+  `X-API-Key`. No browser code reads `import.meta.env`, because a dynamic read inlines every `VITE_`
+  var into the bundle.
 - Auth/session approach: `POST /auth/login` with the key in `X-API-Key`. Access token lives 900 s,
   so refresh with `POST /auth/refresh {refresh_token}` a minute before expiry and once on any 401.
-  Session persisted in localStorage. CORS is open (`*`), so the browser calls the API directly.
+  Session persisted in localStorage. CORS is open (`*`), but calls go through the `/api` proxy
+  so the key stays server-side.
   Refresh tokens are reusable (H-032) and `POST /auth/logout` invalidates nothing (H-031), so
   logout means the browser forgetting the tokens. `data/_probe/session.json`.
   Saved listings live in localStorage keyed by user email, because `/v1/favourites` returns 404.

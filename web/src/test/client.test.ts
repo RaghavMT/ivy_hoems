@@ -3,7 +3,6 @@ import { ApiError, createApiClient } from '../lib/client';
 import { sessionFromTokens, type Session } from '../lib/session';
 
 const BASE = 'https://api.test';
-const KEY = 'test-key';
 
 type Call = { method: string; path: string; search: URLSearchParams; headers: Headers; body: unknown };
 type Handler = (call: Call) => { status: number; body?: unknown };
@@ -49,7 +48,6 @@ function setup(handler: Handler, options: { session?: Session | null; now?: numb
   let session: Session | null = options.session ?? null;
   const client = createApiClient({
     baseUrl: BASE,
-    apiKey: KEY,
     fetch: server.fetch,
     now: () => options.now ?? 0,
     getSession: () => session,
@@ -63,7 +61,7 @@ function setup(handler: Handler, options: { session?: Session | null; now?: numb
 const freshSession = sessionFromTokens(tokenBody(1), 'demo1@ivy.homes', 0);
 
 describe('login', () => {
-  it('posts the credentials with the API key and stores the session', async () => {
+  it('posts the credentials without any API key and stores the session', async () => {
     const t = setup(() => json(200, tokenBody(1)), { now: 1_000 });
 
     const result = await t.client.login('demo1@ivy.homes', 'secret');
@@ -71,7 +69,7 @@ describe('login', () => {
     const [call] = t.calls;
     expect(call?.method).toBe('POST');
     expect(call?.path).toBe('/auth/login');
-    expect(call?.headers.get('X-API-Key')).toBe(KEY);
+    expect(call?.headers.has('X-API-Key')).toBe(false);
     expect(call?.body).toEqual({ email: 'demo1@ivy.homes', password: 'secret' });
     expect(result.accessToken).toBe('access-1');
     expect(t.session()).toEqual(result);
@@ -86,13 +84,13 @@ describe('login', () => {
 });
 
 describe('get', () => {
-  it('sends the key, the bearer token and the defined query params', async () => {
+  it('sends the bearer token and the defined query params, never a key', async () => {
     const t = setup(() => json(200, { results: [] }), { session: freshSession });
 
     await t.client.get('/v1/listings', { locality: 'madhapur', bhk: 2, furnishing: undefined });
 
     const [call] = t.calls;
-    expect(call?.headers.get('X-API-Key')).toBe(KEY);
+    expect(call?.headers.has('X-API-Key')).toBe(false);
     expect(call?.headers.get('Authorization')).toBe('Bearer access-1');
     expect(call?.search.get('locality')).toBe('madhapur');
     expect(call?.search.get('bhk')).toBe('2');
@@ -206,7 +204,6 @@ describe('get', () => {
     let session: Session | null = freshSession;
     const client = createApiClient({
       baseUrl: BASE,
-      apiKey: KEY,
       fetch: (async () => {
         throw new TypeError('Failed to fetch');
       }) as typeof fetch,
