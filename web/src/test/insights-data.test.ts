@@ -7,7 +7,7 @@ import { readRecords, readRepoJson } from './repoData';
 // The insights screen shows only what src/generated/insights.json holds. These tests
 // fail when that file is stale against submission.json or the dump, so a changed
 // answer can't leave the screen showing the old number. Rebuild with
-// `python analysis/export_insights.py && npm run prepare-data`.
+// `python analysis/answers_v2.py && npm run prepare-data`.
 
 type Answers = Record<string, number | string[] | { project_id: string; price_max_inr: number }>;
 const answers = readRepoJson<{ answers: Answers }>('submission.json').answers;

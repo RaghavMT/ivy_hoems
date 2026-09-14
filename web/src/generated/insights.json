@@ -258,44 +258,43 @@
    "key": "bait",
    "count": 135,
    "facts": {
-    "phones": 7,
-    "clones": 14
+    "phones": 7
    },
    "pairs": [
     {
      "bait": {
-      "id": "ZER-2002244",
-      "route": "/listings/ZER-2002244",
-      "detail": "₹52,50,000"
+      "id": "100-2000250",
+      "route": "/listings/100-2000250",
+      "detail": "₹64,00,000"
      },
      "genuine": {
-      "id": "100-2004170",
-      "route": "/listings/100-2004170",
-      "detail": "₹96,90,000"
+      "id": "100-2004191",
+      "route": "/listings/100-2004191",
+      "detail": "₹1,52,30,000"
      }
     },
     {
      "bait": {
-      "id": "100-2001286",
-      "route": "/listings/100-2001286",
-      "detail": "₹48,50,000"
+      "id": "ZER-2004161",
+      "route": "/listings/ZER-2004161",
+      "detail": "₹51,30,000"
      },
      "genuine": {
-      "id": "SQU-2003495",
-      "route": "/listings/SQU-2003495",
-      "detail": "₹1,17,90,000"
+      "id": "100-2000487",
+      "route": "/listings/100-2000487",
+      "detail": "₹1,17,80,000"
      }
     },
     {
      "bait": {
-      "id": "ZER-2004186",
-      "route": "/listings/ZER-2004186",
-      "detail": "₹46,60,000"
+      "id": "100-2003813",
+      "route": "/listings/100-2003813",
+      "detail": "₹65,60,000"
      },
      "genuine": {
-      "id": "ZER-2004090",
-      "route": "/listings/ZER-2004090",
-      "detail": "₹1,06,80,000"
+      "id": "100-2000771",
+      "route": "/listings/100-2000771",
+      "detail": "₹1,53,30,000"
      }
     }
    ],
@@ -534,14 +533,14 @@
      "detail": "title “3 BHK for rent in Madhapur”, locality banjara hills"
     },
     {
+     "id": "R2001007",
+     "route": "/rentals/R2001007",
+     "detail": "title “4 BHK for rent in Manikonda”, locality kompally"
+    },
+    {
      "id": "R2000002",
      "route": "/rentals/R2000002",
      "detail": "title “2 BHK for rent in Nallagandla”, locality kompally"
-    },
-    {
-     "id": "R2000003",
-     "route": "/rentals/R2000003",
-     "detail": "title “3 BHK for rent in Kukatpally”, locality banjara hills"
     }
    ],
    "finding": null

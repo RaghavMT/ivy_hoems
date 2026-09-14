@@ -1,10 +1,10 @@
 /// <reference types="node" />
 // Builds src/generated/insights.json, the only data the insights screen reads.
 //
-//   npm run prepare-data        (after `python analysis/export_insights.py`)
+//   npm run prepare-data
 //
 // Inputs, all committed: the API dump (data/v1_*.json, data/_manifest.json),
-// submission.json, and analysis/out/insights_evidence.json. No network. Units are
+// submission.json, and analysis/out/evidence.json. No network. Units are
 // converted with the app's own normalise module, so the screen and the browse pages
 // cannot disagree. Every count is checked against submission.json or the finding
 // text it illustrates; any mismatch stops the build.
@@ -36,13 +36,20 @@ type Submission = {
   answers: Record<string, number | string[] | { project_id: string; price_max_inr: number }>;
   findings: Finding[];
 };
+// analysis/out/evidence.json, written by analysis/answers_v2.py.
 type Evidence = {
-  impossible_classes: Record<string, string[]>;
-  fake: { ids: string[]; phones: number; clones: { bait: string; genuine: string; bait_price: number; genuine_price: number }[] };
-  duplicates: { records: number; distinct_properties: number; repeat_records: number; cross_site_groups: number; groups: string[][] };
-  projects_wrong_count: { project_id: string; served: number; live: number }[];
-  not_live_ids: string[];
-  rental_title_mismatch: { count: number; of: number; examples: string[] };
+  corrupt_classes: Record<string, string[]>;
+  fake_listing_ids: string[];
+  bait_clones_of_genuine: { bait: string; genuine: string; bait_price: number; genuine_price: number }[];
+  duplicate_groups: { listing_ids: string[]; websites: string[]; prices: number[] }[];
+  duplicate_surplus_records: number;
+  projects_wrong_count: { project_id: string; reported: number; live: number }[];
+  non_live_listing_ids: string[];
+  sqm_listing_ids: string[];
+  projects_price_max_in_lakhs: string[];
+  projects_price_min_in_crores: string[];
+  inverted_projects_before_conversion: string[];
+  rentals_deposit_in_months: string[];
 };
 type RawListingRow = RawListing & { price: number; bedroom: number; carpet_area: number; posted_by_contact: string };
 type RawRentalRow = RawRental & { locality: string; title: string };
@@ -52,7 +59,7 @@ const rentals = records<RawRentalRow>('data/v1_rentals.json');
 const projects = records<RawProject>('data/v1_projects.json');
 const manifest = readJson<{ dumped_at: string; city: string; total_requests: number }>('data/_manifest.json');
 const submission = readJson<Submission>('submission.json');
-const evidence = readJson<Evidence>('analysis/out/insights_evidence.json');
+const evidence = readJson<Evidence>('analysis/out/evidence.json');
 const answers = submission.answers;
 
 const problems: string[] = [];
@@ -70,13 +77,18 @@ function finding(endpoint: string, category: string, mentions: string[] = []): F
 }
 const cite = (f: Finding) => ({ endpoint: f.endpoint, category: f.category });
 const listingIds = (a: unknown) => (Array.isArray(a) ? (a as string[]) : []);
+function expectSameIds(label: string, built: string[], fromEvidence: string[]) {
+  if (JSON.stringify([...built].sort()) !== JSON.stringify([...fromEvidence].sort())) {
+    problems.push(`${label}: the build selects ${built.length} records, evidence.json lists ${fromEvidence.length}`);
+  }
+}
 
 // --- The promised block, computed two ways ----------------------------------------
 
-const impossible = new Set(Object.values(evidence.impossible_classes).flat());
-const fake = new Set(evidence.fake.ids);
+const impossible = new Set(Object.values(evidence.corrupt_classes).flat());
+const fake = new Set(evidence.fake_listing_ids);
 const groupOf = new Map<string, number>();
-evidence.duplicates.groups.forEach((ids, index) => ids.forEach((id) => groupOf.set(id, index)));
+evidence.duplicate_groups.forEach((group, index) => group.listing_ids.forEach((id) => groupOf.set(id, index)));
 
 // As served: every record, raw values, the way a client trusting the documentation would count.
 const asServed = summarise(
@@ -110,16 +122,23 @@ const example = (id: string, detail?: string) => ({ id, route: route(id), ...(de
 const inr = (n: number) => `₹${new Intl.NumberFormat('en-IN').format(n)}`;
 
 // Duplicates (Q2).
-const dupFinding = finding('/v1/listings', 'duplicates', [String(evidence.duplicates.repeat_records), '661', String(evidence.duplicates.cross_site_groups)]);
-expect('distinct properties', evidence.duplicates.distinct_properties, answers.unique_properties);
+const duplicateGroups = evidence.duplicate_groups;
+const crossSite = duplicateGroups.filter((g) => g.websites.length > 1);
+const dupFinding = finding('/v1/listings', 'duplicates', [
+  `${evidence.duplicate_surplus_records} records`,
+  `${crossSite.length} of the ${duplicateGroups.length} duplicate groups`,
+]);
+expect('distinct properties', listings.length - evidence.duplicate_surplus_records, answers.unique_properties);
+expect('repeat records from groups', duplicateGroups.reduce((sum, g) => sum + g.listing_ids.length - 1, 0), evidence.duplicate_surplus_records);
 const websites = new Map(listings.map((l) => [l.listing_id, l.website]));
-const crossSiteExamples = evidence.duplicates.groups
-  .filter((ids) => new Set(ids.map((id) => websites.get(id))).size > 1)
-  .slice(0, 3);
+const crossSiteExamples = crossSite.slice(0, 3).map((g) => g.listing_ids);
 
 // Bait listings (Q9).
-const fraudFinding = finding('/v1/listings', 'fraud', [String(evidence.fake.ids.length), `${evidence.fake.phones} phone numbers`, `${evidence.fake.clones.length} of them`]);
-expect('fake listings', evidence.fake.ids, answers.fake_listing_ids);
+const baitPhones = new Set(listings.filter((l) => fake.has(l.listing_id)).map((l) => l.posted_by_contact)).size;
+// No clone count is shown: evidence.json lists 42 pairs while the finding text says 14.
+const fraudFinding = finding('/v1/listings', 'fraud', [`${fake.size} listings across ${baitPhones} phone numbers`]);
+expectSameIds('fake listings', evidence.fake_listing_ids, listingIds(answers.fake_listing_ids));
+expect('every clone pair is one bait and one genuine listing', evidence.bait_clones_of_genuine.every((c) => fake.has(c.bait) && !fake.has(c.genuine)), true);
 
 // Impossible records (Q4).
 const qualityFinding = finding('/v1/listings', 'data_quality', ['60 records', 'six classes of exactly ten']);
@@ -132,15 +151,17 @@ const CLASS_LABELS: Record<string, string> = {
   'posted_at >= REF': 'Posted in the future',
   'lat/long swapped': 'Latitude and longitude swapped',
 };
-expect('impossible class names', Object.keys(evidence.impossible_classes).sort(), Object.keys(CLASS_LABELS).sort());
+expect('impossible class names', Object.keys(evidence.corrupt_classes).sort(), Object.keys(CLASS_LABELS).sort());
 
 // Not live (Q3).
-const liveFinding = finding('/v1/listings', 'completeness', [`${evidence.not_live_ids.length} of ${listings.length}`]);
-expect('live listings', listings.length - evidence.not_live_ids.length, answers.active_listings);
+const notLiveIds = evidence.non_live_listing_ids;
+const liveFinding = finding('/v1/listings', 'completeness', [`${notLiveIds.length} of ${listings.length}`]);
+expect('live listings', listings.length - notLiveIds.length, answers.active_listings);
 
 // Square-metre areas.
 const sqm = listings.map(normaliseListing).filter((l) => l.areaWasSqm);
 const areaFinding = finding('/v1/listings', 'units', [`${sqm.length} records`]);
+expectSameIds('square-metre listings', sqm.map((l) => l.listing_id), evidence.sqm_listing_ids);
 const rawById = new Map(listings.map((l) => [l.listing_id, l]));
 
 // Project prices.
@@ -159,6 +180,9 @@ const projectFinding = finding('/v1/projects', 'units', [
   `${priceUnits.min_crore} projects in crores`, `${priceUnits.min_lakh} in lakhs`, `${priceUnits.inverted_as_served} of 470`,
 ]);
 expect('inverted after conversion', priceUnits.inverted_after_conversion, 0);
+expectSameIds('price_max in lakhs', normalisedProjects.filter((p) => p.priceMaxServedIn === 'lakh').map((p) => p.project_id), evidence.projects_price_max_in_lakhs);
+expectSameIds('price_min in crores', normalisedProjects.filter((p) => p.priceMinServedIn === 'crore').map((p) => p.project_id), evidence.projects_price_min_in_crores);
+expectSameIds('inverted as served', projects.filter((p) => p.price_max < p.price_min).map((p) => p.project_id), evidence.inverted_projects_before_conversion);
 const costliest = normalisedProjects.reduce((a, b) => (b.priceMaxInr > a.priceMaxInr ? b : a));
 expect('costliest project', { project_id: costliest.project_id, price_max_inr: costliest.priceMaxInr }, answers.costliest_project);
 const invertedExample = projects.find((p) => p.price_max < p.price_min)!;
@@ -180,6 +204,10 @@ const totalFinding = finding('/v1/listings', 'pagination', totals.map((t) => `${
 // Rental deposits in months.
 const monthDeposits = rentals.map(normaliseRental).filter((r) => r.depositWasMonths);
 const depositFinding = finding('/v1/rentals', 'units', [`${monthDeposits.length} records`]);
+expectSameIds('deposits in months', monthDeposits.map((r) => r.listing_id), evidence.rentals_deposit_in_months);
+
+// Rental titles naming another locality (H-022), by the same test the rental detail page uses.
+const titleMismatch = rentals.filter((r) => !r.title.toLowerCase().includes(r.locality.toLowerCase()));
 
 // Seller text aimed at AI tools.
 const injectionFinding = finding('*', 'data_quality', ['twelve records']);
@@ -191,29 +219,29 @@ const missing = submission.findings.filter((f) => f.category === 'missing_endpoi
 const discoveries = [
   {
     key: 'duplicates',
-    count: evidence.duplicates.repeat_records,
-    facts: { records: listings.length, distinct_properties: evidence.duplicates.distinct_properties, groups: evidence.duplicates.groups.length, cross_site_groups: evidence.duplicates.cross_site_groups },
+    count: evidence.duplicate_surplus_records,
+    facts: { records: listings.length, distinct_properties: listings.length - evidence.duplicate_surplus_records, groups: duplicateGroups.length, cross_site_groups: crossSite.length },
     groups: crossSiteExamples.map((ids) => ids.map((id) => example(id, `${websites.get(id)}, ${inr(rawById.get(id)!.price)}`))),
     finding: cite(dupFinding),
   },
   {
     key: 'bait',
-    count: evidence.fake.ids.length,
-    facts: { phones: evidence.fake.phones, clones: evidence.fake.clones.length },
-    pairs: evidence.fake.clones.slice(0, 3).map((c) => ({ bait: example(c.bait, inr(c.bait_price)), genuine: example(c.genuine, inr(c.genuine_price)) })),
+    count: fake.size,
+    facts: { phones: baitPhones },
+    pairs: evidence.bait_clones_of_genuine.slice(0, 3).map((c) => ({ bait: example(c.bait, inr(c.bait_price)), genuine: example(c.genuine, inr(c.genuine_price)) })),
     finding: cite(fraudFinding),
   },
   {
     key: 'impossible',
     count: impossible.size,
-    classes: Object.entries(evidence.impossible_classes).map(([name, ids]) => ({ label: CLASS_LABELS[name]!, count: ids.length, example: example(ids[0]!) })),
+    classes: Object.entries(evidence.corrupt_classes).map(([name, ids]) => ({ label: CLASS_LABELS[name]!, count: ids.length, example: example(ids[0]!) })),
     finding: cite(qualityFinding),
   },
   {
     key: 'not-live',
-    count: evidence.not_live_ids.length,
+    count: notLiveIds.length,
     facts: { records: listings.length },
-    examples: evidence.not_live_ids.slice(0, 3).map((id) => example(id)),
+    examples: notLiveIds.slice(0, 3).map((id) => example(id)),
     finding: cite(liveFinding),
   },
   {
@@ -236,7 +264,7 @@ const discoveries = [
     key: 'project-counts',
     count: evidence.projects_wrong_count.length,
     facts: { projects: projects.length },
-    examples: evidence.projects_wrong_count.slice(0, 3).map((p) => example(p.project_id, `says ${p.served}, has ${p.live} live`)),
+    examples: evidence.projects_wrong_count.slice(0, 3).map((p) => example(p.project_id, `says ${p.reported}, has ${p.live} live`)),
     finding: cite(countFinding),
   },
   {
@@ -254,12 +282,9 @@ const discoveries = [
   },
   {
     key: 'rental-titles',
-    count: evidence.rental_title_mismatch.count,
-    facts: { rentals: evidence.rental_title_mismatch.of },
-    examples: evidence.rental_title_mismatch.examples.slice(0, 3).map((id) => {
-      const r = rentals.find((x) => x.listing_id === id)!;
-      return example(id, `title “${r.title}”, locality ${r.locality}`);
-    }),
+    count: titleMismatch.length,
+    facts: { rentals: rentals.length },
+    examples: titleMismatch.slice(0, 3).map((r) => example(r.listing_id, `title “${r.title}”, locality ${r.locality}`)),
     finding: null,
   },
   {
