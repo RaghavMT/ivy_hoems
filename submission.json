@@ -427,7 +427,7 @@
       "endpoint": "/v1/listings",
       "category": "fraud",
       "documented": "posted_by_contact is the seller's verified contact number, and is_verified means our operations team has checked the listing",
-      "actual": "135 listings across 7 phone numbers are enquiry bait. Each number carries 19-20 listings under several invented agency names (Star Housing, Skyline Homes, Elite Properties, Prime Realty, Vertex Realty, Dream Space, Anchor Homes, Crown Estates, Orbit Estates), prices at 45-57% of the locality-and-bedroom median, and is 100% is_verified and 100% is_live with posted_by always 'agent'. 14 of them are provable clones of genuine listings: same apartment, locality, floor, bedroom, bathroom, parking and facing, carpet area within 1%, priced at roughly half.",
+      "actual": "135 listings across 7 phone numbers are enquiry bait. Each number carries 19-20 listings under several invented agency names (Star Housing, Skyline Homes, Elite Properties, Prime Realty, Vertex Realty, Dream Space, Anchor Homes, Crown Estates, Orbit Estates), prices at 45-57% of the locality-and-bedroom median, and is 100% is_verified and 100% is_live with posted_by always 'agent'. 42 of them are provable clones of genuine listings: same apartment, locality, floor, bedroom, bathroom, parking and facing, carpet area within 1% once the magichomes square-metre records are unit-corrected, priced at roughly half.",
       "how_found": "a shared phone alone is not fraud - 739 numbers appear more than once and most high-volume numbers are legitimate. Requiring more than one seller name on a number narrowed it to 12; the five that remained at 83-108% of market with mixed verification and person names rather than agency names are real brokerages. The discriminator is the combination of below-market pricing with perfect verified/live flags.",
       "impact": "a user contacting any of these reaches an enquiry farm rather than a property. They also drag any price statistic downward, which is why they are excluded from the price-per-square-foot answer.",
       "evidence": [
@@ -556,15 +556,6 @@
       "actual": "404 Not Found with full credentials and a real listing_id",
       "how_found": "called once with a real ID (data/_probe/by_id.json)",
       "impact": "a 'you may also like' strip has to be computed client-side",
-      "evidence": []
-    },
-    {
-      "endpoint": "/health",
-      "category": "timestamps",
-      "documented": "Timestamps | ISO 8601, UTC, Z suffix, everywhere in the API",
-      "actual": "the health clock carries an explicit +05:30 offset, not a Z, and the response includes undocumented timezone and reference_date fields",
-      "how_found": "called it before writing any other code",
-      "impact": "small on its own, but it establishes that the service's business clock is IST, which is what makes the seven-day window and the magichomes unit cutover resolve cleanly in IST rather than UTC",
       "evidence": []
     },
     {
