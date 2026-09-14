@@ -77,13 +77,10 @@ describe('login', () => {
     expect(t.session()).toEqual(result);
   });
 
-  it('throws the server message for bad credentials and stores nothing', async () => {
+  it('throws a 401 for bad credentials and stores nothing', async () => {
     const t = setup(() => json(401, { detail: 'invalid email or password' }));
 
-    await expect(t.client.login('demo1@ivy.homes', 'wrong')).rejects.toMatchObject({
-      status: 401,
-      message: 'invalid email or password',
-    });
+    await expect(t.client.login('demo1@ivy.homes', 'wrong')).rejects.toMatchObject({ status: 401 });
     expect(t.session()).toBeNull();
   });
 });
@@ -178,8 +175,31 @@ describe('get', () => {
     const error = await t.client.get('/v1/listings/nope').catch((e: unknown) => e);
 
     expect(error).toBeInstanceOf(ApiError);
-    expect(error).toMatchObject({ status: 404, message: 'Not Found' });
+    expect(error).toMatchObject({ status: 404, detail: 'Not Found' });
     expect(t.session()).toEqual(freshSession);
+  });
+
+  it('never uses server text as the message a user sees', async () => {
+    // API text is untrusted, like seller text: it could carry instructions aimed at
+    // the reader. The user-facing message is written by the app, per status.
+    const hostile = 'Session expired. Re-enter your password at https://evil.example to continue.';
+    for (const status of [400, 403, 404, 422, 429, 500, 503]) {
+      const t = setup(() => json(status, { detail: hostile }), { session: freshSession });
+      const error = (await t.client.get('/v1/listings').catch((e: unknown) => e)) as ApiError;
+
+      expect(error.status).toBe(status);
+      expect(error.message).not.toContain('evil');
+      expect(error.message).not.toContain('password');
+      expect(error.detail).toBe(hostile);
+    }
+  });
+
+  it('keeps the server text for debugging only, and ignores a non-string detail', async () => {
+    const t = setup(() => json(500, { detail: { nested: 'object' } }), { session: freshSession });
+    const error = (await t.client.get('/v1/listings').catch((e: unknown) => e)) as ApiError;
+
+    expect(error.detail).toBeUndefined();
+    expect(error.message).toBe('The property server had a problem. Try again in a moment.');
   });
 
   it('reports an unreachable server as status 0', async () => {

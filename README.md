@@ -69,6 +69,14 @@ python analysis/answers_v2.py --check   # recomputes all ten answers offline
   and the page says which unit the source used. The listing count is shown as approximate, because
   it counts live listings only and disagrees even with that for 129 of 470 projects. Amenities are
   shown as plain text, because one project's list contains an instruction aimed at AI tools.
+- **Insights.** `/v1/analytics/summary` returns 404, so the page computes the documented summary from
+  the committed copy of the data, twice: as served, and corrected (live, not impossible, not bait,
+  one record per home, areas in square feet). Below it, each data discovery has a count, example
+  records that open in the app, and a note on what it means for someone using the site. The page
+  reads one generated file, `web/src/generated/insights.json`, built by `npm run prepare-data` from
+  the dump, `submission.json` and `analysis/out/evidence.json`. The build refuses to write if any
+  count disagrees with those files, so the screen can't drift from the submitted answers. The page
+  needs no login and makes no API calls.
 
 ## Tests
 

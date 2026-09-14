@@ -1,0 +1,618 @@
+{
+ "source": {
+  "city": "Hyderabad",
+  "dumped_at": "2026-09-12T12:17:34.349888+00:00",
+  "records": {
+   "listings": 4400,
+   "rentals": 1650,
+   "projects": 470
+  }
+ },
+ "promised": {
+  "as_served": {
+   "total_listings": 4400,
+   "median_price": 10600000,
+   "median_price_per_sqft": 10123,
+   "by_locality": [
+    {
+     "locality": "banjara hills",
+     "count": 413,
+     "median_price": 10340000
+    },
+    {
+     "locality": "gachibowli",
+     "count": 432,
+     "median_price": 10210000
+    },
+    {
+     "locality": "jubilee hills",
+     "count": 445,
+     "median_price": 10600000
+    },
+    {
+     "locality": "kompally",
+     "count": 493,
+     "median_price": 10970000
+    },
+    {
+     "locality": "kondapur",
+     "count": 393,
+     "median_price": 10450000
+    },
+    {
+     "locality": "kukatpally",
+     "count": 414,
+     "median_price": 10575000
+    },
+    {
+     "locality": "madhapur",
+     "count": 430,
+     "median_price": 10845000
+    },
+    {
+     "locality": "manikonda",
+     "count": 480,
+     "median_price": 10820000
+    },
+    {
+     "locality": "miyapur",
+     "count": 473,
+     "median_price": 10500000
+    },
+    {
+     "locality": "nallagandla",
+     "count": 427,
+     "median_price": 10740000
+    }
+   ],
+   "by_bhk": [
+    {
+     "bedroom": 0,
+     "count": 207
+    },
+    {
+     "bedroom": 1,
+     "count": 351
+    },
+    {
+     "bedroom": 2,
+     "count": 1383
+    },
+    {
+     "bedroom": 3,
+     "count": 1629
+    },
+    {
+     "bedroom": 4,
+     "count": 625
+    },
+    {
+     "bedroom": 5,
+     "count": 205
+    }
+   ]
+  },
+  "corrected": {
+   "total_listings": 2890,
+   "median_price": 10740000,
+   "median_price_per_sqft": 9905,
+   "by_locality": [
+    {
+     "locality": "banjara hills",
+     "count": 266,
+     "median_price": 10485000
+    },
+    {
+     "locality": "gachibowli",
+     "count": 276,
+     "median_price": 10210000
+    },
+    {
+     "locality": "jubilee hills",
+     "count": 285,
+     "median_price": 10890000
+    },
+    {
+     "locality": "kompally",
+     "count": 304,
+     "median_price": 11000000
+    },
+    {
+     "locality": "kondapur",
+     "count": 255,
+     "median_price": 10460000
+    },
+    {
+     "locality": "kukatpally",
+     "count": 287,
+     "median_price": 10430000
+    },
+    {
+     "locality": "madhapur",
+     "count": 289,
+     "median_price": 11090000
+    },
+    {
+     "locality": "manikonda",
+     "count": 328,
+     "median_price": 11055000
+    },
+    {
+     "locality": "miyapur",
+     "count": 310,
+     "median_price": 10890000
+    },
+    {
+     "locality": "nallagandla",
+     "count": 290,
+     "median_price": 10780000
+    }
+   ],
+   "by_bhk": [
+    {
+     "bedroom": 0,
+     "count": 142
+    },
+    {
+     "bedroom": 1,
+     "count": 227
+    },
+    {
+     "bedroom": 2,
+     "count": 922
+    },
+    {
+     "bedroom": 3,
+     "count": 1060
+    },
+    {
+     "bedroom": 4,
+     "count": 406
+    },
+    {
+     "bedroom": 5,
+     "count": 133
+    }
+   ]
+  },
+  "excluded": {
+   "not_live": 923,
+   "impossible": 43,
+   "fake": 135,
+   "repeat": 409
+  }
+ },
+ "answers": {
+  "total_listing_records": 4400,
+  "unique_properties": 3675,
+  "active_listings": 3477,
+  "corrupt_listing_ids": {
+   "count": 60
+  },
+  "total_monthly_rent": 5978500,
+  "avg_price_per_sqft_2bhk": 10208.09,
+  "costliest_project": {
+   "project_id": "P20384",
+   "price_max_inr": 41500000
+  },
+  "listings_last_7_days": 141,
+  "fake_listing_ids": {
+   "count": 135
+  },
+  "projects_with_wrong_listing_count": 129
+ },
+ "discoveries": [
+  {
+   "key": "duplicates",
+   "count": 725,
+   "facts": {
+    "records": 4400,
+    "distinct_properties": 3675,
+    "groups": 661,
+    "cross_site_groups": 537
+   },
+   "groups": [
+    [
+     {
+      "id": "100-2000030",
+      "route": "/listings/100-2000030",
+      "detail": "100acres, ₹1,51,50,000"
+     },
+     {
+      "id": "MAG-2004263",
+      "route": "/listings/MAG-2004263",
+      "detail": "magichomes, ₹1,54,20,000"
+     }
+    ],
+    [
+     {
+      "id": "100-2000047",
+      "route": "/listings/100-2000047",
+      "detail": "100acres, ₹1,12,80,000"
+     },
+     {
+      "id": "SQU-2003652",
+      "route": "/listings/SQU-2003652",
+      "detail": "squarelane, ₹1,15,20,000"
+     }
+    ],
+    [
+     {
+      "id": "100-2000078",
+      "route": "/listings/100-2000078",
+      "detail": "100acres, ₹93,90,000"
+     },
+     {
+      "id": "MAG-2003521",
+      "route": "/listings/MAG-2003521",
+      "detail": "magichomes, ₹95,50,000"
+     }
+    ]
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "duplicates"
+   }
+  },
+  {
+   "key": "bait",
+   "count": 135,
+   "facts": {
+    "phones": 7
+   },
+   "pairs": [
+    {
+     "bait": {
+      "id": "100-2000250",
+      "route": "/listings/100-2000250",
+      "detail": "₹64,00,000"
+     },
+     "genuine": {
+      "id": "100-2004191",
+      "route": "/listings/100-2004191",
+      "detail": "₹1,52,30,000"
+     }
+    },
+    {
+     "bait": {
+      "id": "ZER-2004161",
+      "route": "/listings/ZER-2004161",
+      "detail": "₹51,30,000"
+     },
+     "genuine": {
+      "id": "100-2000487",
+      "route": "/listings/100-2000487",
+      "detail": "₹1,17,80,000"
+     }
+    },
+    {
+     "bait": {
+      "id": "100-2003813",
+      "route": "/listings/100-2003813",
+      "detail": "₹65,60,000"
+     },
+     "genuine": {
+      "id": "100-2000771",
+      "route": "/listings/100-2000771",
+      "detail": "₹1,53,30,000"
+     }
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "fraud"
+   }
+  },
+  {
+   "key": "impossible",
+   "count": 60,
+   "classes": [
+    {
+     "label": "Price of zero or less",
+     "count": 10,
+     "example": {
+      "id": "100-2001154",
+      "route": "/listings/100-2001154"
+     }
+    },
+    {
+     "label": "Price under ₹1 lakh for a 2 or 3 BHK",
+     "count": 10,
+     "example": {
+      "id": "100-2001069",
+      "route": "/listings/100-2001069"
+     }
+    },
+    {
+     "label": "Super built-up area smaller than carpet area",
+     "count": 10,
+     "example": {
+      "id": "100-2000330",
+      "route": "/listings/100-2000330"
+     }
+    },
+    {
+     "label": "Floor above the building’s top floor",
+     "count": 10,
+     "example": {
+      "id": "100-2002483",
+      "route": "/listings/100-2002483"
+     }
+    },
+    {
+     "label": "Posted in the future",
+     "count": 10,
+     "example": {
+      "id": "100-2000986",
+      "route": "/listings/100-2000986"
+     }
+    },
+    {
+     "label": "Latitude and longitude swapped",
+     "count": 10,
+     "example": {
+      "id": "100-2001796",
+      "route": "/listings/100-2001796"
+     }
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "data_quality"
+   }
+  },
+  {
+   "key": "not-live",
+   "count": 923,
+   "facts": {
+    "records": 4400
+   },
+   "examples": [
+    {
+     "id": "100-2000051",
+     "route": "/listings/100-2000051"
+    },
+    {
+     "id": "100-2000061",
+     "route": "/listings/100-2000061"
+    },
+    {
+     "id": "100-2000063",
+     "route": "/listings/100-2000063"
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "completeness"
+   }
+  },
+  {
+   "key": "sqm-areas",
+   "count": 358,
+   "examples": [
+    {
+     "id": "MAG-2001953",
+     "route": "/listings/MAG-2001953",
+     "detail": "carpet area served as 105, which is 1,130 sq ft"
+    },
+    {
+     "id": "MAG-2000209",
+     "route": "/listings/MAG-2000209",
+     "detail": "carpet area served as 142, which is 1,528 sq ft"
+    },
+    {
+     "id": "MAG-2003550",
+     "route": "/listings/MAG-2003550",
+     "detail": "carpet area served as 174, which is 1,873 sq ft"
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "units"
+   }
+  },
+  {
+   "key": "project-prices",
+   "count": 470,
+   "facts": {
+    "max_crore": 438,
+    "max_lakh": 32,
+    "min_crore": 90,
+    "min_lakh": 380,
+    "inverted_as_served": 348,
+    "inverted_after_conversion": 0
+   },
+   "examples": [
+    {
+     "id": "P20384",
+     "route": "/projects/P20384",
+     "detail": "price_min 1.39, price_max 4.15: the costliest project"
+    },
+    {
+     "id": "P20001",
+     "route": "/projects/P20001",
+     "detail": "price_min 65.2, price_max 1.21"
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/projects",
+    "category": "units"
+   }
+  },
+  {
+   "key": "project-counts",
+   "count": 129,
+   "facts": {
+    "projects": 470
+   },
+   "examples": [
+    {
+     "id": "P20001",
+     "route": "/projects/P20001",
+     "detail": "says 1, has 8 live"
+    },
+    {
+     "id": "P20007",
+     "route": "/projects/P20007",
+     "detail": "says 10, has 7 live"
+    },
+    {
+     "id": "P20012",
+     "route": "/projects/P20012",
+     "detail": "says 0, has 4 live"
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/projects",
+    "category": "consistency"
+   }
+  },
+  {
+   "key": "totals",
+   "count": 261,
+   "totals": [
+    {
+     "collection": "listings",
+     "paged": 4400,
+     "reported": 4224
+    },
+    {
+     "collection": "rentals",
+     "paged": 1650,
+     "reported": 1584
+    },
+    {
+     "collection": "projects",
+     "paged": 470,
+     "reported": 451
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/listings",
+    "category": "pagination"
+   }
+  },
+  {
+   "key": "deposits",
+   "count": 344,
+   "facts": {
+    "rentals": 1650
+   },
+   "examples": [
+    {
+     "id": "R2000002",
+     "route": "/rentals/R2000002",
+     "detail": "deposit served as 4, which is ₹94,000"
+    },
+    {
+     "id": "R2000003",
+     "route": "/rentals/R2000003",
+     "detail": "deposit served as 2, which is ₹57,200"
+    },
+    {
+     "id": "R2000009",
+     "route": "/rentals/R2000009",
+     "detail": "deposit served as 10, which is ₹2,40,000"
+    }
+   ],
+   "finding": {
+    "endpoint": "/v1/rentals",
+    "category": "units"
+   }
+  },
+  {
+   "key": "rental-titles",
+   "count": 1499,
+   "facts": {
+    "rentals": 1650
+   },
+   "examples": [
+    {
+     "id": "R2000001",
+     "route": "/rentals/R2000001",
+     "detail": "title “3 BHK for rent in Madhapur”, locality banjara hills"
+    },
+    {
+     "id": "R2001007",
+     "route": "/rentals/R2001007",
+     "detail": "title “4 BHK for rent in Manikonda”, locality kompally"
+    },
+    {
+     "id": "R2000002",
+     "route": "/rentals/R2000002",
+     "detail": "title “2 BHK for rent in Nallagandla”, locality kompally"
+    }
+   ],
+   "finding": null
+  },
+  {
+   "key": "injected-text",
+   "count": 12,
+   "examples": [
+    {
+     "id": "100-2000006",
+     "route": "/listings/100-2000006"
+    },
+    {
+     "id": "MAG-2003644",
+     "route": "/listings/MAG-2003644"
+    },
+    {
+     "id": "DWE-2002396",
+     "route": "/listings/DWE-2002396"
+    },
+    {
+     "id": "MAG-2003816",
+     "route": "/listings/MAG-2003816"
+    },
+    {
+     "id": "R2001007",
+     "route": "/rentals/R2001007"
+    },
+    {
+     "id": "R2000970",
+     "route": "/rentals/R2000970"
+    },
+    {
+     "id": "MAG-2001533",
+     "route": "/listings/MAG-2001533"
+    },
+    {
+     "id": "SQU-2001249",
+     "route": "/listings/SQU-2001249"
+    },
+    {
+     "id": "DWE-2004066",
+     "route": "/listings/DWE-2004066"
+    },
+    {
+     "id": "R2000005",
+     "route": "/rentals/R2000005"
+    },
+    {
+     "id": "R2001467",
+     "route": "/rentals/R2001467"
+    },
+    {
+     "id": "P20004",
+     "route": "/projects/P20004"
+    }
+   ],
+   "finding": {
+    "endpoint": "*",
+    "category": "data_quality"
+   }
+  },
+  {
+   "key": "missing-endpoints",
+   "count": 4,
+   "endpoints": [
+    "/v1/analytics/summary",
+    "/v1/favourites",
+    "/v1/listing/{id}",
+    "/v1/listings/{id}/similar"
+   ],
+   "finding": null
+  }
+ ]
+}
