@@ -23,6 +23,11 @@ export function furnishingLabel(value: string): string {
   return FURNISHING_LABELS[value] ?? titleCase(value);
 }
 
+/** "under construction" -> "Under construction". */
+export function projectStatusLabel(status: string): string {
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
 export function bedroomsLabel(count: number): string {
   return count === 0 ? 'Studio / plot' : `${count} BHK`;
 }

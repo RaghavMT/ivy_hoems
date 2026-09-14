@@ -30,8 +30,24 @@ export function formatInrFull(amount: number): string {
   return `${sign}₹${grouped.format(Math.abs(amount))}`;
 }
 
+/** A plain count with Indian digit grouping: 2,347. */
+export function formatCount(count: number): string {
+  return grouped.format(count);
+}
+
 export function formatSqft(area: number): string {
   return `${grouped.format(area)} sq ft`;
+}
+
+/** A price range: ₹37.9 L to ₹87.2 L. One amount when both ends read the same. */
+export function formatInrRange(min: number, max: number): string {
+  const [low, high] = [formatInr(min), formatInr(max)];
+  return low === high ? low : `${low} to ${high}`;
+}
+
+/** An area range with the unit named once: 1,394 to 3,546 sq ft. */
+export function formatSqftRange(min: number, max: number): string {
+  return min === max ? formatSqft(min) : `${grouped.format(min)} to ${formatSqft(max)}`;
 }
 
 const istDate = new Intl.DateTimeFormat('en-IN', {

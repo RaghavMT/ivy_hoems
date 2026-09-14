@@ -110,6 +110,17 @@ describe('normaliseProject', () => {
     expect(result.priceMaxInr).toBe(8_720_000);
   });
 
+  it('records which unit each price was served in, so a page can say so', () => {
+    expect(normaliseProject({ price_min: 1.21, price_max: 2.58 } as RawProject)).toMatchObject({
+      priceMinServedIn: 'crore',
+      priceMaxServedIn: 'crore',
+    });
+    expect(normaliseProject({ price_min: 37.9, price_max: 1.04 } as RawProject)).toMatchObject({
+      priceMinServedIn: 'lakh',
+      priceMaxServedIn: 'crore',
+    });
+  });
+
   it('does not expose the raw price fields', () => {
     const result = normaliseProject({ project_id: 'P1', price_min: 50, price_max: 2 } as RawProject);
     expect(result).not.toHaveProperty('price_min');
@@ -121,6 +132,11 @@ describe('normaliseProject', () => {
   it('never shows a minimum above the maximum, across all 470 projects', () => {
     expect(projects).toHaveLength(470);
     expect(projects.filter((p) => p.priceMinInr > p.priceMaxInr)).toEqual([]);
+  });
+
+  it('splits units as the units finding counts them: price_min 90 crores, price_max 438 crores', () => {
+    expect(projects.filter((p) => p.priceMinServedIn === 'crore')).toHaveLength(90);
+    expect(projects.filter((p) => p.priceMaxServedIn === 'crore')).toHaveLength(438);
   });
 
   it('agrees with the submitted answer for the costliest project', () => {

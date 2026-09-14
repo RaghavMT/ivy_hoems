@@ -143,9 +143,14 @@ export type Rental = Omit<RawRental, 'price' | 'deposit' | 'maintenance' | 'carp
   superBuiltUpAreaSqft: number;
 };
 
+export type PriceUnit = 'lakh' | 'crore';
+
 export type Project = Omit<RawProject, 'price_min' | 'price_max'> & {
   priceMinInr: number;
   priceMaxInr: number;
+  /** The unit each price was served in, before conversion to rupees. */
+  priceMinServedIn: PriceUnit;
+  priceMaxServedIn: PriceUnit;
 };
 
 // --- Conversions --------------------------------------------------------------
@@ -182,8 +187,12 @@ export function normaliseRental(raw: RawRental): Rental {
   };
 }
 
+function projectPriceUnit(raw: number): PriceUnit {
+  return raw < PROJECT_CRORE_BELOW ? 'crore' : 'lakh';
+}
+
 export function projectPriceToInr(raw: number): number {
-  return Math.round(raw * (raw < PROJECT_CRORE_BELOW ? CRORE : LAKH));
+  return Math.round(raw * (projectPriceUnit(raw) === 'crore' ? CRORE : LAKH));
 }
 
 export function normaliseProject(raw: RawProject): Project {
@@ -192,5 +201,7 @@ export function normaliseProject(raw: RawProject): Project {
     ...rest,
     priceMinInr: projectPriceToInr(price_min),
     priceMaxInr: projectPriceToInr(price_max),
+    priceMinServedIn: projectPriceUnit(price_min),
+    priceMaxServedIn: projectPriceUnit(price_max),
   };
 }

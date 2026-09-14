@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { formatDateIST, formatInr, formatInrFull, formatSqft } from '../lib/format';
+import {
+  formatCount,
+  formatDateIST,
+  formatInr,
+  formatInrFull,
+  formatInrRange,
+  formatSqft,
+  formatSqftRange,
+} from '../lib/format';
 
 describe('formatDateIST', () => {
   it('shows the calendar date in India, not in UTC', () => {
@@ -50,5 +58,33 @@ describe('formatSqft', () => {
   it('groups digits and names the unit', () => {
     expect(formatSqft(732)).toBe('732 sq ft');
     expect(formatSqft(1501)).toBe('1,501 sq ft');
+  });
+});
+
+describe('formatCount', () => {
+  it('groups digits the Indian way', () => {
+    expect(formatCount(2347)).toBe('2,347');
+    expect(formatCount(17)).toBe('17');
+  });
+});
+
+describe('formatInrRange', () => {
+  it('joins two compact amounts with "to"', () => {
+    expect(formatInrRange(13_900_000, 41_500_000)).toBe('₹1.39 Cr to ₹4.15 Cr');
+    expect(formatInrRange(3_790_000, 8_720_000)).toBe('₹37.9 L to ₹87.2 L');
+  });
+
+  it('shows one amount when both ends read the same', () => {
+    expect(formatInrRange(10_000_000, 10_000_000)).toBe('₹1 Cr');
+  });
+});
+
+describe('formatSqftRange', () => {
+  it('names the unit once', () => {
+    expect(formatSqftRange(1394, 3546)).toBe('1,394 to 3,546 sq ft');
+  });
+
+  it('shows one area when both ends are equal', () => {
+    expect(formatSqftRange(1200, 1200)).toBe('1,200 sq ft');
   });
 });

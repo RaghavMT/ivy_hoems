@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { bedroomsLabel, furnishingLabel, listingTitle, resultsSummary, titleCase } from '../lib/labels';
+import {
+  bedroomsLabel,
+  furnishingLabel,
+  listingTitle,
+  projectStatusLabel,
+  resultsSummary,
+  titleCase,
+} from '../lib/labels';
 
 describe('titleCase', () => {
   it('capitalises each word, including after hyphens', () => {
@@ -52,6 +59,14 @@ describe('bedroomsLabel', () => {
     expect(bedroomsLabel(0)).toBe('Studio / plot');
     expect(bedroomsLabel(1)).toBe('1 BHK');
     expect(bedroomsLabel(5)).toBe('5 BHK');
+  });
+});
+
+describe('projectStatusLabel', () => {
+  it('reads as a sentence, not a heading', () => {
+    expect(projectStatusLabel('new launch')).toBe('New launch');
+    expect(projectStatusLabel('ready to move')).toBe('Ready to move');
+    expect(projectStatusLabel('under construction')).toBe('Under construction');
   });
 });
 
